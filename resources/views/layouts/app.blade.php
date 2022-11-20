@@ -77,7 +77,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
                                 <li>
-                                    <a class="dropdown-item" href="/profile">
+                                    <a class="dropdown-item" href="profile">
                                         <i class="fas fa-user"></i>
                                         Profil
                                     </a>

@@ -19,8 +19,15 @@ use App\Http\Controllers\UserController;
 Route::get('/', [Controller::class, 'home'])->name('home');
 Route::get('/login', [UserController::class, 'RedirectToLoginPage'])->name('login');
 Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name('register');
+Route::get('/profile', [UserController::class, 'RedirectToProfilePage'])->name('profile');
 
-//Auth
+//User
 Route::post('/login', [UserController::class, 'Login'])->name('login');
 Route::post('/register', [UserController::class, 'Register'])->name('register');
 Route::post('/logout', [UserController::class, 'Logout'])->name('logout');
+Route::post('/profile', [UserController::class, 'UpdateProfile'])->name('profile');
+Route::post('/profile/delete', [UserController::class, 'DeleteProfile'])->name('profile/delete');
+
+//Socialite
+Route::get('/googlelogin', [UserController::class, 'RedirectToGoogle'])->name('googlelogin');
+Route::get('/google/callback', [UserController::class, 'GoogleCallback']);
