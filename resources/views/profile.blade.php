@@ -5,7 +5,7 @@
         <div class="col-md-3">
             <div class="card">
                 <div class="card-header">
-                    <h5 class="card-title text-center">Profil</h5>
+                    <h5 class="card-title text-center">{{ auth()->user()->name }}</h5>
                 </div>
                 <div class="card-body">
                     <div class="row">
@@ -17,10 +17,24 @@
                             </div>
                         </div>
                     </div>
-                    <div class="row mt-3">
+                    <div class="row mt-1">
                         <div class="col-md-12">
                             <div class="text-center">
-                                <h5>{{ auth()->user()->name }}</h5>
+                                <h6>{{ auth()->user()->bio }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h6>{{ auth()->user()->email }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h6>Počet příspěvků: {{ auth()->user()->posts->count() }}</h6>
                             </div>
                         </div>
                     </div>

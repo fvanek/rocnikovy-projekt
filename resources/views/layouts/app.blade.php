@@ -64,6 +64,10 @@
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}"><i class="fa-solid fa-house me-1"></i>Domů</a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('subforums') }}"><i
+                                class="fa-solid fa-comments me-1"></i>Subfora</a>
+                    </li>
                 </ul>
                 <ul class="navbar-nav d-flex">
                     @auth

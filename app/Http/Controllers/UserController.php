@@ -10,7 +10,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
-
+use Termwind\Components\Dd;
 
 class UserController extends Controller
 {
@@ -115,11 +115,8 @@ class UserController extends Controller
 
     function GoogleCallback()
     {
-        try {
-            $user = Socialite::driver('google')->user();
-        } catch (\Exception $e) {
-            return redirect()->route('login');
-        }
+        $user = Socialite::driver('google')->user();
+
 
         $existingUser = User::where('google_id', $user->id)->first();
 
@@ -157,6 +154,8 @@ class UserController extends Controller
         $request->session()->invalidate();
 
         $request->session()->regenerateToken();
+
+        sleep(1);
 
         return redirect()->route('home');
     }

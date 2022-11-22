@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SubforumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,6 +21,7 @@ Route::get('/', [Controller::class, 'home'])->name('home');
 Route::get('/login', [UserController::class, 'RedirectToLoginPage'])->name('login');
 Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name('register');
 Route::get('/profile', [UserController::class, 'RedirectToProfilePage'])->name('profile');
+Route::get('/subforums', [SubforumController::class, 'RedirectToSubforumsPage'])->name('subforums');
 
 //User
 Route::post('/login', [UserController::class, 'Login'])->name('login');
@@ -31,3 +33,6 @@ Route::post('/profile/delete', [UserController::class, 'DeleteProfile'])->name('
 //Socialite
 Route::get('/googlelogin', [UserController::class, 'RedirectToGoogle'])->name('googlelogin');
 Route::get('/google/callback', [UserController::class, 'GoogleCallback']);
+
+//Subforum
+Route::post('/subforum/create', [SubforumController::class, 'CreateSubforum'])->name('subforum/create');
