@@ -2,11 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use Reflector;
+use App\Model\Post;
 use App\Models\Subforum;
+use Termwind\Components\Dd;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
-use Reflector;
+use Illuminate\Support\Facades\Storage;
 
 class SubforumController extends Controller
 {
@@ -17,34 +21,54 @@ class SubforumController extends Controller
         ]);
     }
 
+    function RedirectToSubforumPage($id)
+    {
+        $subforum = Subforum::find($id);
+        return view('subforum', [
+            'subforum' => $subforum,
+            'posts' => DB::table('posts')->where('subforum_id', $id)->orderBy('created_at', 'desc')->get(),
+        ]);
+    }
+
     function CreateSubforum(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255|unique:subforums',
-            'description' => 'required|string|max:255',
+            'name' => 'required|unique:subforums|max:255',
+            'description' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
-        dd($request->all());
-
+        $subforum = new Subforum();
+        $subforum->name = $request->name;
+        $subforum->description = $request->description;
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = $request->name . '.' . $image->getClientOriginalExtension();
-            $image->storeAs('subforum_images', $imageName, 'public');
-            $imagePath = 'subforum_images/' . $imageName;
+            Storage::putFileAs('public/subforum_images', $request->file('image'), $request->file('image')->getClientOriginalName());
+            $subforum->image = 'subforum_images/' . $request->file('image')->getClientOriginalName();
         } else {
-            $imagePath = 'subforum_images/default.png';
+            $subforum->image = 'subforum_images/default.png';
         }
+        $subforum->user_id = Auth::id();
+        $subforum->save();
 
+        return redirect()->route('subforums');
+    }
 
+    function DeleteSubforum(Subforum $subforum)
+    {
+        $subforum->delete();
+        return redirect()->route('subforums');
+    }
 
-        Subforum::create([
-            'name' => $request->name,
-            'description' => $request->description,
-            'image' => $imagePath,
-            'user_id' => Auth::user()->id,
-        ]);
-
+    function UpdateSubforum(Request $request, Subforum $subforum)
+    {
+        $subforum->name = $request->name;
+        $subforum->description = $request->description;
+        if ($request->hasFile('image')) {
+            Storage::disk('public')->delete($subforum->image);
+            Storage::putFileAs('public/subforum_images', $request->file('image'), $request->file('image')->getClientOriginalName());
+            $subforum->image = 'subforum_images/' . $request->file('image')->getClientOriginalName();
+        }
+        $subforum->save();
         return redirect()->route('subforums');
     }
 }

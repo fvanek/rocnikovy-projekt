@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->timestamps();
             $table->string('title');
-            $table->string('content');
+            $table->longText('content');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('subforum_id')->constrained();
             $table->integer('likes')->default(0);

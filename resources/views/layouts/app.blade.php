@@ -44,16 +44,35 @@
                 display: none;
             }
         }
+
+        footer {
+            opacity: 70%;
+        }
     </style>
+
+    <!-- TinyMCE -->
+    <script src="https://cdn.tiny.cloud/1/atv0zz5w87uf8ihnq71cwdpdyaknsvib3auq25226a3dha1y/tinymce/6/tinymce.min.js"
+        referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: 'textarea.tinymce',
+            language: 'cs',
+            plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode tableofcontents footnotes mergetags autocorrect',
+            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+        });
+    </script>
 
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
+
+    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
+    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="antialiased">
     <nav class="navbar navbar-expand-lg bg-light sticky-top">
         <div class="container-fluid">
-            <a class="navbar-brand" href="">{{ $nav_title }}</a>
+            <span class="navbar-brand">{{ $nav_title }}</span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
                 aria-label="Toggle navigation">
@@ -81,7 +100,7 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
                                 <li>
-                                    <a class="dropdown-item" href="profile">
+                                    <a class="dropdown-item" href="{{ route('profile') }}">
                                         <i class="fas fa-user"></i>
                                         Profil
                                     </a>
@@ -92,7 +111,7 @@
                                     <hr class="dropdown-divider">
                                 </li>
                                 <li>
-                                    <form action="logout" method="POST">
+                                    <form action="{{ route('logout') }}" method="POST">
                                         @csrf
                                         <button type="submit" class="dropdown-item">
                                             <i class="fa-solid fa-right-from-bracket me-1"></i>Odhlásit se
@@ -103,7 +122,8 @@
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="/login"><i class="fas fa-sign-in-alt me-1"></i><b>Přihlásit
+                            <a class="nav-link" href="{{ route('login') }}"><i
+                                    class="fas fa-sign-in-alt me-1"></i><b>Přihlásit
                                     se</b></a>
                         </li>
                     @endauth
@@ -118,15 +138,11 @@
     <div class="container mt-4">
         @yield('content')
     </div>
-    <footer class="bg-light text-center text-lg-start fixed-bottom" style="opacity: 50%">
-        <div class="text-center p-3">
-            © 2022 Filip Vaněk
-        </div>
-    </footer>
-
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
     </script>
+
+
 </body>
 
 </html>

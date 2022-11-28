@@ -1,7 +1,8 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubforumController;
 
@@ -16,14 +17,12 @@ use App\Http\Controllers\SubforumController;
 |
 */
 
-//Redirects
 Route::get('/', [Controller::class, 'home'])->name('home');
+
+//User
 Route::get('/login', [UserController::class, 'RedirectToLoginPage'])->name('login');
 Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name('register');
 Route::get('/profile', [UserController::class, 'RedirectToProfilePage'])->name('profile');
-Route::get('/subforums', [SubforumController::class, 'RedirectToSubforumsPage'])->name('subforums');
-
-//User
 Route::post('/login', [UserController::class, 'Login'])->name('login');
 Route::post('/register', [UserController::class, 'Register'])->name('register');
 Route::post('/logout', [UserController::class, 'Logout'])->name('logout');
@@ -35,4 +34,14 @@ Route::get('/googlelogin', [UserController::class, 'RedirectToGoogle'])->name('g
 Route::get('/google/callback', [UserController::class, 'GoogleCallback']);
 
 //Subforum
+Route::get('/subforums', [SubforumController::class, 'RedirectToSubforumsPage'])->name('subforums');
+Route::get('/subforum/{id}', [SubforumController::class, 'RedirectToSubforumPage'])->name('subforum');
 Route::post('/subforum/create', [SubforumController::class, 'CreateSubforum'])->name('subforum/create');
+Route::delete('/subforum/{subforum}', [SubforumController::class, 'DeleteSubforum'])->name('subforum/delete');
+Route::put('/subforum/{subforum}', [SubforumController::class, 'UpdateSubforum'])->name('subforum/update');
+
+//Post
+Route::post('/post/create', [PostController::class, 'CreatePost'])->name('post/create');
+Route::get('/post/{id}', [PostController::class, 'RedirectToPostPage'])->name('post');
+Route::delete('/post/{post}', [PostController::class, 'DeletePost'])->name('post/delete');
+Route::post('/post/upload_image', [PostController::class, 'UploadPostImage'])->name('post/upload_image');

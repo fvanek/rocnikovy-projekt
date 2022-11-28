@@ -115,8 +115,7 @@ class UserController extends Controller
 
     function GoogleCallback()
     {
-        $user = Socialite::driver('google')->user();
-
+        $user = Socialite::driver('google')->stateless()->user();
 
         $existingUser = User::where('google_id', $user->id)->first();
 
