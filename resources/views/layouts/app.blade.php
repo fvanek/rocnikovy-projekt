@@ -34,8 +34,8 @@
         }
 
         @media (max-width: 991px) {
-            footer {
-                display: none;
+            .xd {
+                margin-bottom: 5px;
             }
         }
 
@@ -48,7 +48,20 @@
         footer {
             opacity: 70%;
         }
+
+        .xd:hover {
+            color: white;
+        }
+
+        .card_header {
+            text-decoration: none;
+        }
     </style>
+
+
+
+    <!-- Icons -->
+    <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
 
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/atv0zz5w87uf8ihnq71cwdpdyaknsvib3auq25226a3dha1y/tinymce/6/tinymce.min.js"
@@ -57,16 +70,15 @@
         tinymce.init({
             selector: 'textarea.tinymce',
             language: 'cs',
-            plugins: 'anchor autolink charmap codesample emoticons link lists searchreplace table visualblocks wordcount checklist mediaembed casechange export formatpainter pageembed linkchecker a11ychecker tinymcespellchecker permanentpen powerpaste advtable advcode tableofcontents footnotes mergetags autocorrect',
-            toolbar: 'undo redo | blocks fontfamily fontsize | bold italic underline strikethrough | link table mergetags | addcomment showcomments | spellcheckdialog a11ycheck | align lineheight | checklist numlist bullist indent outdent | emoticons charmap | removeformat',
+            plugins: [
+                'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
+                'lists', 'link', 'charmap', 'preview', 'anchor', 'searchreplace',
+                'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'table', 'help',
+                'wordcount'
+            ],
+            toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
         });
     </script>
-
-    <!-- Icons -->
-    <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
-
-    <script src="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone-min.js"></script>
-    <link href="https://unpkg.com/dropzone@6.0.0-beta.1/dist/dropzone.css" rel="stylesheet" type="text/css" />
 </head>
 
 <body class="antialiased">
@@ -91,8 +103,8 @@
                 <ul class="navbar-nav d-flex">
                     @auth
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="xd nav-link dropdown-toggle btn btn-outline-dark rounded-pill" href="#"
+                                id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="rounded-circle me-1"
                                     style="width: 30px; height: 30px;">
                                 {{ Auth::user()->name }}
@@ -100,9 +112,9 @@
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
                                 <li>
-                                    <a class="dropdown-item" href="{{ route('profile') }}">
-                                        <i class="fas fa-user"></i>
-                                        Profil
+                                    <a class="dropdown-item" href="/profile/{{ Auth::user()->id }}"><i
+                                            class="fa-solid fa-user me-1"></i>Můj
+                                        profil</a>
                                     </a>
                                 </li>
                                 <li><a class="dropdown-item" href="#">Action</a></li>
@@ -122,9 +134,9 @@
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ route('login') }}"><i
-                                    class="fas fa-sign-in-alt me-1"></i><b>Přihlásit
-                                    se</b></a>
+                            <a class="nav-link btn btn-primary rounded-pill text-white" href="{{ route('login') }}"><i
+                                    class="fas fa-sign-in-alt me-1"></i>Přihlásit
+                                se</a>
                         </li>
                     @endauth
                 </ul>

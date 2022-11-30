@@ -75,9 +75,12 @@ class UserController extends Controller
         return redirect()->route('home');
     }
 
-    function RedirectToProfilePage()
+    function RedirectToProfilePage($id)
     {
-        return view('profile');
+        $user = User::find($id);
+        return view('profile', [
+            'user' => $user,
+        ]);
     }
 
     function UpdateProfile(Request $request)

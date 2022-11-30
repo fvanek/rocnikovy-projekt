@@ -55,6 +55,11 @@ class SubforumController extends Controller
 
     function DeleteSubforum(Subforum $subforum)
     {
+        $posts = DB::table('posts')->where('subforum_id', $subforum->id)->get();
+        foreach ($posts as $post) {
+            DB::table('comments')->where('post_id', $post->id)->delete();
+        }
+        DB::table('posts')->where('subforum_id', $subforum->id)->delete();
         $subforum->delete();
         return redirect()->route('subforums');
     }
@@ -69,6 +74,6 @@ class SubforumController extends Controller
             $subforum->image = 'subforum_images/' . $request->file('image')->getClientOriginalName();
         }
         $subforum->save();
-        return redirect()->route('subforums');
+        return redirect()->route('subforum', $subforum->id);
     }
 }

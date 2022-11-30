@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Post;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 
@@ -33,8 +34,10 @@ class PostController extends Controller
     function RedirectToPostPage($id)
     {
         $post = Post::find($id);
+        $comments = DB::table('comments')->where('post_id', $id)->orderBy('created_at', 'desc')->get();
         return view('post', [
             'post' => $post,
+            'comments' => $comments,
         ]);
     }
 

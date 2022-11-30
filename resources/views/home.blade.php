@@ -3,33 +3,30 @@
     <p class="nav_title">{{ $nav_title = 'Nejnovější příspěvky' }}</p>
     <div class="row">
         <div class="col">
-            <div class="card-body">
-                <div class="card mb-3">
-                    <div class="card-header">
-                        <h5>
-                            <a href="#">
-                                XDDDD
-                            </a>
-                        </h5>
-                    </div>
-                    <div class="card-body">
-                        <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Nulla non lectus sed nisl molestie
-                            malesuada. Mauris tincidunt sem sed arcu. Nulla accumsan, elit sit amet varius semper, nulla
-                            mauris mollis quam, tempor suscipit diam nulla vel leo. Pellentesque sapien. Nam sed tellus
-                            id magna elementum tincidunt. Praesent id justo in neque elementum ultrices. Integer
-                            vulputate sem a nibh rutrum consequat. Aliquam erat volutpat. Itaque earum rerum hic tenetur
-                            a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut
-                            perferendis doloribus asperiores repellat. Temporibus autem quibusdam et aut officiis
-                            debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et
-                            molestiae non recusandae. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris
-                            nisi ut aliquip ex ea commodo consequat.</p>
-                    </div>
-                    <div class="card-footer">
-                        Přidal: <a href="#">Petr</a>
-                        <div class="float-right">12.12.2020</div>
-                    </div>
+            @if ($posts->count() == 0)
+                <div class="alert alert-info" role="alert">
+                    <h4 class="alert-heading">Žádné příspěvky</h4>
+                    <p>Nic tu není <i class="fa-solid fa-face-sad-tear"></i></p>
                 </div>
-            </div>
+            @else
+                @foreach ($posts as $post)
+                    <div class="card mb-2">
+                        <div class="card-header">
+                            <h5 class="card-title mb-0"><a class="card_header stretched-link link-dark"
+                                    href="{{ route('post', $post->id) }}">{{ $post->title }}</a></h5>
+                        </div>
+                        <div class="card-body">
+                            <p class="card-text">Vytvořeno {{ date('d.m.Y', strtotime($post->created_at)) }}</p>
+                            <p class="card-text">
+                                <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
+                                    class="img rounded-circle me-1" width="30px" height="30px" alt="Profile Picture">
+                                {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
+                            </p>
+                            <p class="card-text">{{ substr($post->content, 0, 100) }}...</p>
+                        </div>
+                    </div>
+                @endforeach
+            @endif
         </div>
     </div>
 @endsection

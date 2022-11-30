@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubforumController;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,11 +23,11 @@ Route::get('/', [Controller::class, 'home'])->name('home');
 //User
 Route::get('/login', [UserController::class, 'RedirectToLoginPage'])->name('login');
 Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name('register');
-Route::get('/profile', [UserController::class, 'RedirectToProfilePage'])->name('profile');
+Route::get('/profile/{id}', [UserController::class, 'RedirectToProfilePage'])->name('profile');
 Route::post('/login', [UserController::class, 'Login'])->name('login');
 Route::post('/register', [UserController::class, 'Register'])->name('register');
 Route::post('/logout', [UserController::class, 'Logout'])->name('logout');
-Route::post('/profile', [UserController::class, 'UpdateProfile'])->name('profile');
+Route::post('/profile/update', [UserController::class, 'UpdateProfile'])->name('profile/update');
 Route::post('/profile/delete', [UserController::class, 'DeleteProfile'])->name('profile/delete');
 
 //Socialite
@@ -44,4 +45,6 @@ Route::put('/subforum/{subforum}', [SubforumController::class, 'UpdateSubforum']
 Route::post('/post/create', [PostController::class, 'CreatePost'])->name('post/create');
 Route::get('/post/{id}', [PostController::class, 'RedirectToPostPage'])->name('post');
 Route::delete('/post/{post}', [PostController::class, 'DeletePost'])->name('post/delete');
-Route::post('/post/upload_image', [PostController::class, 'UploadPostImage'])->name('post/upload_image');
+
+//Comment
+Route::post('/comment/create', [CommentController::class, 'CreateComment'])->name('comment/create');
