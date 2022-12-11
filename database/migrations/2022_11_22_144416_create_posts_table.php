@@ -20,7 +20,6 @@ return new class extends Migration
             $table->longText('content');
             $table->foreignId('user_id')->constrained();
             $table->foreignId('subforum_id')->constrained();
-            $table->integer('likes')->default(0);
         });
     }
 

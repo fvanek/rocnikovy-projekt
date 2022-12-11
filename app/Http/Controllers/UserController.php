@@ -60,7 +60,7 @@ class UserController extends Controller
                 Cookie::queue('remember_password', $request->password, 60 * 24 * 30);
             }
 
-            return redirect()->route('home');
+            return redirect()->intended();
         }
     }
 
@@ -72,7 +72,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->back();
     }
 
     function RedirectToProfilePage($id)
@@ -137,7 +137,7 @@ class UserController extends Controller
             auth()->login($newUser, true);
         }
 
-        return redirect()->route('home');
+        return redirect()->intended();
     }
 
     function DeleteProfile(Request $request)

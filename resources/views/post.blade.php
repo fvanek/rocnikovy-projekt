@@ -4,7 +4,8 @@
         {{ $nav_title = 'Příspěvek' }}</p>
 
     <div class="mb-2">
-        <a href="{{ route('subforum', $post->subforum_id) }}" class="btn btn-light"><i
+        <a href="{{ redirect()->getUrlGenerator()->previous() }}
+            " class="btn btn-light"><i
                 class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
         @auth
             @if (Auth::user()->id == $post->user_id)
@@ -24,7 +25,7 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-                                <form action="/post/{{ $post->id }}" method="POST">
+                                <form action="{{ route('post/delete', $post->id) }}" method="POST">
                                     @csrf
                                     @method('DELETE')
                                     <button type="submit" class="btn btn-danger">Smazat</button>
@@ -39,16 +40,62 @@
 
     <div class="card mb-2">
         <div class="card-header">
-            <h5 class="card-title mb-0 text-center">{{ $post->title }}</h5>
+            <h5 class="card-title post_card mb-1">
+                {{ $post->title }}
+                @auth
+                    <form action="{{ route('post/like') }}" method="POST" class="float-end">
+                        @csrf
+                        <input type="hidden" name="post_id" value="{{ $post->id }}">
+                        <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
+                        <button type="submit" class="btn btn-light btn-sm mb-1">
+                            @if (DB::table('likes')->where('post_id', $post->id)->where('user_id', Auth::user()->id)->exists())
+                                <i class="fa-solid fa-heart text-danger me-1"></i>
+                            @else
+                                <i class="fa-solid fa-heart me-1"></i>
+                            @endif
+                            <b>{{ DB::table('likes')->where('post_id', $post->id)->count() }}</b>
+                        </button>
+                    </form>
+                @else
+                    <button type="button" class="btn btn-light btn-sm float-end mb-1" data-bs-toggle="modal"
+                        data-bs-target="#notLoggedInLikeModal">
+                        <i class="fa-solid fa-heart me-1"></i>
+                        <b>{{ DB::table('likes')->where('post_id', $post->id)->count() }}</b>
+                    </button>
+                @endauth
+            </h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="modal fade text-dark" id="notLoggedInLikeModal" tabindex="-1"
+                        aria-labelledby="notLoggedInLikeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="notLoggedInLikeModal">Přidat do oblíbených</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Pro přidání příspěvku do oblíbených se musíte přihlásit.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+                                    <a href="{{ route('login') }}" class="btn btn-primary">Přihlásit se</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-body">
-            {{ $post->content }}
-            <p class="card-text mb-2">Vytvořeno {{ date('d.m.Y', strtotime($post->created_at)) }}
-            <p class="card-text">
+            <div class="card-text mb-1">{!! $post->content !!}</div>
+            <div class="card-text">
                 <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
                     class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
                 {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
-            </p>
+            </div>
+            <div class="card-text">{{ date('d.m.Y', strtotime($post->created_at)) }}</div>
         </div>
 
         <div class="card-footer">
@@ -59,10 +106,11 @@
                 <div class="col text-end">
                     @auth
                         <button class="btn btn-primary" type="button" data-bs-toggle="modal" data-bs-target="#addCommentModal">
-                            <i class="fa-solid fa-comment-plus me-1"></i>Přidat komentář</button>
+                            Přidat komentář</button>
                     @endauth
                 </div>
             </div>
+
 
             <div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="addCommentModalLabel"
                 aria-hidden="true">
@@ -70,7 +118,8 @@
                     <div class="modal-content">
                         <div class="modal-header">
                             <h5 class="modal-title" id="addCommentModalLabel">Přidat komentář</h5>
-                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                aria-label="Close"></button>
                         </div>
                         <form action="/comment/create" method="POST">
                             @csrf
@@ -101,7 +150,7 @@
                                     @if (Auth::user()->id == $comment->user_id)
                                         <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                             data-bs-target="#deleteCommentModal{{ $comment->id }}">
-                                            <i class="fa-solid fa-trash me-1"></i></button>
+                                            <i class="fa-solid fa-trash"></i></button>
 
                                         <div class="modal fade text-start" id="deleteCommentModal{{ $comment->id }}"
                                             tabindex="-1" aria-labelledby="deleteCommentModalLabel{{ $comment->id }}"
@@ -110,7 +159,8 @@
                                                 <div class="modal-content">
                                                     <div class="modal-header">
                                                         <h5 class="modal-title"
-                                                            id="deleteCommentModalLabel{{ $comment->id }}">Smazat
+                                                            id="deleteCommentModalLabel{{ $comment->id }}">
+                                                            Smazat
                                                             komentář</h5>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
@@ -134,12 +184,16 @@
                                 @endauth
                             </div>
                         </div>
-                        <p class="card-text">
+                        <div class="card-text mt-2">
                             <img src="{{ asset('storage/' .DB::table('users')->where('id', $comment->user_id)->value('avatar')) }}"
                                 class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                            {{ DB::table('users')->where('id', $comment->user_id)->value('name') }}<br>
+                            {{ DB::table('users')->where('id', $comment->user_id)->value('name') }}
+                        </div>
+                        <div class="card-text">
                             {{ date('d.m.Y', strtotime($comment->created_at)) }}
-                        </p>
+                        </div>
+                    </div>
+                </div>
             @endforeach
         </div>
     </div>

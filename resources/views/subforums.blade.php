@@ -83,7 +83,7 @@
             <div class="card mb-2">
                 <div class="card-header position-relative">
                     <h5 class="card-title text-center"><a class="card_header stretched-link link-dark"
-                            href="subforum/{{ $subforum->id }}">{{ $subforum->name }}</a></h5>
+                            href="{{ route('subforum', $subforum->id) }}">{{ $subforum->name }}</a></h5>
                 </div>
                 <div class="card-body">
                     <div class="row">

@@ -1,0 +1,47 @@
+@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+
+body {
+    background: linear-gradient(
+        90deg,
+        rgb(147, 15, 255) 2%,
+        rgb(5, 49, 255) 100.7%
+    );
+    font-family: "Source Sans Pro", sans-serif;
+}
+
+.alert-fixed {
+    position: fixed;
+    top: 0px;
+    left: 0px;
+    width: 100%;
+    z-index: 9999;
+    border-radius: 0px;
+}
+
+.nav_title {
+    display: none;
+}
+
+@media (max-width: 991px) {
+    .xd {
+        margin-bottom: 5px;
+    }
+}
+
+@media (min-width: 991px) {
+    .nav-footer {
+        display: none;
+    }
+}
+
+footer {
+    opacity: 70%;
+}
+
+.xd:hover {
+    color: white;
+}
+
+.card_header {
+    text-decoration: none;
+}

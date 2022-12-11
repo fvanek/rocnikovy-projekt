@@ -3,7 +3,7 @@
     <p class="nav_title">{{ $nav_title = 'Profil' }}</p>
     @if (Auth::user()->id == $user->id)
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-3 xd">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title text-center">{{ auth()->user()->name }}</h5>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9">
+            <div class="col-md-9 xd">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title text-center">Nastavení</h5>

@@ -43,6 +43,8 @@ class PostController extends Controller
 
     function DeletePost(Post $post)
     {
+        DB::table('comments')->where('post_id', $post->id)->delete();
+        DB::table('likes')->where('post_id', $post->id)->delete();
         $post->delete();
         return redirect()->route('subforum', ['id' => $post->subforum_id]);
     }

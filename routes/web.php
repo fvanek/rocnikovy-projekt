@@ -6,6 +6,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SubforumController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,6 +46,9 @@ Route::put('/subforum/{subforum}', [SubforumController::class, 'UpdateSubforum']
 Route::post('/post/create', [PostController::class, 'CreatePost'])->name('post/create');
 Route::get('/post/{id}', [PostController::class, 'RedirectToPostPage'])->name('post');
 Route::delete('/post/{post}', [PostController::class, 'DeletePost'])->name('post/delete');
+
+//Like
+Route::post('/post/like', [LikeController::class, 'LikePost'])->name('post/like');
 
 //Comment
 Route::post('/comment/create', [CommentController::class, 'CreateComment'])->name('comment/create');

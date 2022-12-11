@@ -60,6 +60,10 @@ class SubforumController extends Controller
             DB::table('comments')->where('post_id', $post->id)->delete();
         }
         DB::table('posts')->where('subforum_id', $subforum->id)->delete();
+        if ($subforum->image != 'subforum_images/default.png') {
+            Storage::delete('public/' . $subforum->image);
+        }
+
         $subforum->delete();
         return redirect()->route('subforums');
     }

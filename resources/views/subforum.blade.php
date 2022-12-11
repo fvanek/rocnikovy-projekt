@@ -25,24 +25,6 @@
                     <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                         aria-expanded="false" aria-controls="collapseExample">
                         <i class="fa-solid fa-plus me-1"></i>Přidat příspěvek</button>
-
-                    <div class="collapse mt-3" id="collapseExample">
-                        <div class="card card-body">
-                            <form action="{{ route('post/create') }}" method="POST" enctype="multipart/form-data">
-                                @csrf
-                                <div class="mb-3">
-                                    <label for="title" class="form-label">Název</label>
-                                    <input type="text" class="form-control" id="title" name="title" required>
-                                </div>
-                                <div class="mb-3">
-                                    <label for="content" class="form-label">Obsah</label>
-                                    <textarea class="tinymce form-control" id="content" name="content"></textarea>
-                                </div>
-                                <input type="hidden" name="subforum_id" value="{{ $subforum->id }}">
-                                <input type="submit" class="btn btn-primary" value="Přidat">
-                            </form>
-                        </div>
-                    </div>
                     @if ($subforum->user_id == Auth::id())
                         <button type="button" class="btn btn-success" data-bs-toggle="modal"
                             data-bs-target="#editSubforumModal">
@@ -100,8 +82,7 @@
                                         Opravdu chcete smazat subforum?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary"
-                                            data-bs-dismiss="modal">Zavřít</button>
+                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
                                         <form action="{{ route('subforum/delete', $subforum->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -112,6 +93,24 @@
                             </div>
                         </div>
                     @endif
+                    <div class="collapse mt-3" id="collapseExample">
+                        <div class="card card-body">
+                            <form action="{{ route('post/create') }}" method="POST" enctype="multipart/form-data">
+                                @csrf
+                                <div class="mb-3">
+                                    <label for="title" class="form-label">Název</label>
+                                    <input type="text" class="form-control" id="title" name="title" required>
+                                </div>
+                                <div class="mb-3">
+                                    <label for="content" class="form-label">Obsah</label>
+                                    <textarea class="tinymce form-control" id="content" name="content"></textarea>
+                                </div>
+                                <input type="hidden" name="subforum_id" value="{{ $subforum->id }}">
+                                <input type="submit" class="btn btn-primary" value="Přidat">
+                            </form>
+                        </div>
+                    </div>
+
                 @endauth
             </div>
         </div>
@@ -125,12 +124,19 @@
                     </h5>
                 </div>
                 <div class="card-body">
-                    <p class="card-text">Vytvořeno {{ date('d.m.Y', strtotime($post->created_at)) }}</p>
-                    <p class="card-text">
+                    <div class="card-text">
+                        @if (strlen($post->content) > 100)
+                            {!! substr($post->content, 0, 100) . '...' !!}
+                        @else
+                            {!! $post->content !!}
+                        @endif
+                    </div>
+                    <div class="card-text mt-3">
                         <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
                             class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                        {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
-                    </p>
+                        {{ DB::table('users')->where('id', $post->user_id)->value('name') }} -
+                        {{ date('d.m.Y', strtotime($post->created_at)) }}
+                    </div>
                 </div>
             </div>
         </div>
