@@ -44,6 +44,14 @@
             .post_card {
                 text-align: left;
             }
+
+            img {
+                max-width: 100%;
+            }
+
+            .login {
+                margin-top: 5px;
+            }
         }
 
         @media (min-width: 991px) {
@@ -58,10 +66,6 @@
 
         footer {
             opacity: 70%;
-        }
-
-        .xd:hover {
-            color: white;
         }
 
         .card_header {
@@ -80,10 +84,8 @@
             selector: 'textarea.tinymce',
             language: 'cs',
             plugins: [
-                'a11ychecker', 'advlist', 'advcode', 'advtable', 'autolink', 'checklist', 'export',
-                'lists', 'link', 'charmap', 'preview', 'anchor', 'searchreplace',
-                'powerpaste', 'fullscreen', 'formatpainter', 'insertdatetime', 'table', 'help',
-                'wordcount'
+                'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview', 'anchor', 'searchreplace',
+                'fullscreen', 'insertdatetime', 'table', 'help', 'wordcount'
             ],
             toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
         });
@@ -104,7 +106,7 @@
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <ul class="navbar-nav mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link" href="{{ route('home') }}"><i class="fa-solid fa-house me-1"></i>Domů</a>
                     </li>
@@ -113,25 +115,33 @@
                                 class="fa-solid fa-comments me-1"></i>Subfora</a>
                     </li>
                 </ul>
-                <ul class="navbar-nav d-flex">
+                <ul class="navbar-nav d-flex ms-auto">
+                    <li class="nav-item me-2">
+                        <a class="nav-link" data-bs-target="#searchModal" data-bs-toggle="modal" href="#"><i
+                                class="fa-solid fa-search me-1 my-auto"></i>Hledat</a>
+                    </li>
                     @auth
                         <li class="nav-item dropdown">
-                            <a class="xd nav-link dropdown-toggle btn btn-outline-dark rounded-pill" href="#"
-                                id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                                data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="rounded-circle me-1"
                                     style="width: 30px; height: 30px;">
                                 {{ Auth::user()->name }}
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
-
                                 <li>
                                     <a class="dropdown-item" href="/profile/{{ Auth::user()->id }}"><i
                                             class="fa-solid fa-user me-1"></i>Můj
                                         profil</a>
                                     </a>
                                 </li>
-                                <li><a class="dropdown-item" href="#">Action</a></li>
-                                <li><a class="dropdown-item" href="#">Another action</a></li>
+                                <li><a href="{{ route('posts/mine') }}" class="dropdown-item"><i
+                                            class="fa-solid fa-user-pen me-1"></i>Moje
+                                        příspěvky</a>
+                                <li>
+                                <li><a href="{{ route('posts/favorites') }}" class="dropdown-item"><i
+                                            class="fa-solid fa-heart me-1"></i>Oblíbené
+                                        příspěvky</a>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -147,8 +157,8 @@
                         </li>
                     @else
                         <li class="nav-item">
-                            <a class="nav-link btn btn-primary rounded-pill text-white" href="{{ route('login') }}"><i
-                                    class="fas fa-sign-in-alt me-1"></i>Přihlásit
+                            <a class="nav-link btn btn-primary rounded-pill text-white login"
+                                href="{{ route('login') }}"><i class="fas fa-sign-in-alt me-1"></i>Přihlásit
                                 se</a>
                         </li>
                     @endauth
@@ -160,6 +170,27 @@
             </div>
         </div>
     </nav>
+    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="searchModalLabel">Hledat</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ route('search') }}" method="GET">
+                        <div class="input-group mb-3">
+                            <input type="text" class="form-control" name="search" value="{{ old('search') }}"
+                                placeholder="Hledejte příspěvky, uživatele, subfora" aria-label="Hledat"
+                                aria-describedby="button-addon2" aria-required="true" required>
+                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i
+                                    class="fa-solid fa-search"></i></button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="container mt-4">
         @yield('content')
     </div>

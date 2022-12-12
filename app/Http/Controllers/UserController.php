@@ -78,6 +78,7 @@ class UserController extends Controller
     function RedirectToProfilePage($id)
     {
         $user = User::find($id);
+        $posts = $user->posts()->paginate(10);
         return view('profile', [
             'user' => $user,
         ]);
@@ -108,7 +109,7 @@ class UserController extends Controller
         $user->save();
 
         sleep(1);
-        return redirect()->route('profile');
+        return redirect()->back();
     }
 
     function RedirectToGoogle()

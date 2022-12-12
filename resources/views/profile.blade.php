@@ -3,7 +3,7 @@
     <p class="nav_title">{{ $nav_title = 'Profil' }}</p>
     @if (Auth::user()->id == $user->id)
         <div class="row">
-            <div class="col-md-3 xd">
+            <div class="col-md-3">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title text-center">{{ auth()->user()->name }}</h5>
@@ -49,7 +49,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 xd">
+            <div class="col-md-9">
                 <div class="card">
                     <div class="card-header">
                         <h5 class="card-title text-center">Nastavení</h5>
@@ -57,7 +57,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-md-12">
-                                <form action="/profile" method="POST" enctype="multipart/form-data">
+                                <form action="{{ route('profile/update') }}" method="POST" enctype="multipart/form-data">
                                     @csrf
                                     <div class="mb-3">
                                         <label for="avatar" class="form-label">Profilová fotka</label>
@@ -114,45 +114,45 @@
             </div>
         </div>
     @else
-        <div class="row">
-            <div class="col-md-3">
-                <div class="card">
-                    <div class="card-header">
-                        <h5 class="card-title text-center">{{ auth()->user()->name }}</h5>
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title text-center">{{ $user->name }}</h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <img src="{{ asset('storage/' . $user->avatar) }}" class="img rounded-circle mx-auto d-block"
+                                width="100px" height="100px" alt="Profile Picture">
+                        </div>
                     </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-md-12">
-                                <div class="text-center">
-                                    <img src="{{ asset('storage/' . Auth::user()->avatar) }}"
-                                        class="img rounded-circle mx-auto d-block" width="100px" height="100px"
-                                        alt="Profile Picture">
-                                </div>
-                            </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            @if ($user->bio != null || strlen($user->bio) > 0)
+                                <h6>{{ $user->bio }}</h6>
+                            @else
+                                <h6>Tento uživatel nemá žádné bio.</h6>
+                            @endif
                         </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12">
-                                <div class="text-center">
-                                    <h6>{{ auth()->user()->bio }}</h6>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="row mt-1">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <h6>Počet příspěvků: {{ $user->posts()->count() }}</h6>
                         </div>
-                        <div class="row mt-1">
-                            <div class="col-md-12">
-                                <div class="text-center">
-                                    <h6>Počet příspěvků: {{ auth()->user()->posts->count() }}</h6>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <div class="text-center">
-                                    <h6>Členem od {{ date('d.m.Y', strtotime(auth()->user()->created_at)) }}</h6>
-                                </div>
-                            </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <h6>Členem od {{ date('d.m.Y', strtotime($user->created_at)) }}</h6>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
     @endif
 @endsection

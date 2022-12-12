@@ -2,11 +2,12 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SubforumController;
+use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\LikeController;
+use App\Http\Controllers\SubforumController;
 
 /*
 |--------------------------------------------------------------------------
@@ -46,9 +47,15 @@ Route::put('/subforum/{subforum}', [SubforumController::class, 'UpdateSubforum']
 Route::post('/post/create', [PostController::class, 'CreatePost'])->name('post/create');
 Route::get('/post/{id}', [PostController::class, 'RedirectToPostPage'])->name('post');
 Route::delete('/post/{post}', [PostController::class, 'DeletePost'])->name('post/delete');
+Route::get('/posts/favorites', [PostController::class, 'RedirectToFavoritesPage'])->name('posts/favorites');
+Route::get('/posts/mine', [PostController::class, 'RedirectToMyPostsPage'])->name('posts/mine');
 
 //Like
 Route::post('/post/like', [LikeController::class, 'LikePost'])->name('post/like');
 
 //Comment
 Route::post('/comment/create', [CommentController::class, 'CreateComment'])->name('comment/create');
+Route::delete('/comment/{comment}', [CommentController::class, 'DeleteComment'])->name('comment/delete');
+
+//Search
+Route::get('/search', [SearchController::class, 'Search'])->name('search');

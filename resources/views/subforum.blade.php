@@ -110,9 +110,8 @@
                             </form>
                         </div>
                     </div>
-
-                @endauth
-            </div>
+                </div>
+            @endauth
         </div>
     </div>
     @foreach ($posts as $post)

@@ -22,4 +22,10 @@ class CommentController extends Controller
 
         return redirect()->route('post', ['id' => $request->post_id]);
     }
+
+    function DeleteComment(Comment $comment)
+    {
+        $comment->delete();
+        return redirect()->route('post', ['id' => $comment->post_id]);
+    }
 }

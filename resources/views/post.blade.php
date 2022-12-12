@@ -2,11 +2,9 @@
 @section('content')
     <p class="nav_title">
         {{ $nav_title = 'Příspěvek' }}</p>
-
     <div class="mb-2">
-        <a href="{{ redirect()->getUrlGenerator()->previous() }}
-            " class="btn btn-light"><i
-                class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
+        <a href="{{ route('subforum', ['id' => $post->subforum->id]) }}" class="btn btn-light"><i
+                class="fa-solid fa-arrow-left me-1"></i>Zpět na subforum</a>
         @auth
             @if (Auth::user()->id == $post->user_id)
                 <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deletePostModal">
@@ -37,7 +35,6 @@
             @endif
         @endauth
     </div>
-
     <div class="card mb-2">
         <div class="card-header">
             <h5 class="card-title post_card mb-1">
@@ -49,9 +46,9 @@
                         <input type="hidden" name="user_id" value="{{ Auth::user()->id }}">
                         <button type="submit" class="btn btn-light btn-sm mb-1">
                             @if (DB::table('likes')->where('post_id', $post->id)->where('user_id', Auth::user()->id)->exists())
-                                <i class="fa-solid fa-heart text-danger me-1"></i>
+                                <i class="fa-solid fa-heart-circle-xmark text-danger me-1"></i>
                             @else
-                                <i class="fa-solid fa-heart me-1"></i>
+                                <i class="fa-solid fa-heart-circle-plus me-1"></i>
                             @endif
                             <b>{{ DB::table('likes')->where('post_id', $post->id)->count() }}</b>
                         </button>
@@ -59,7 +56,7 @@
                 @else
                     <button type="button" class="btn btn-light btn-sm float-end mb-1" data-bs-toggle="modal"
                         data-bs-target="#notLoggedInLikeModal">
-                        <i class="fa-solid fa-heart me-1"></i>
+                        <i class="fa-solid fa-heart-circle-plus me-1"></i>
                         <b>{{ DB::table('likes')->where('post_id', $post->id)->count() }}</b>
                     </button>
                 @endauth
@@ -89,19 +86,19 @@
             </div>
         </div>
         <div class="card-body">
-            <div class="card-text mb-1">{!! $post->content !!}</div>
             <div class="card-text">
                 <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
                     class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
                 {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
             </div>
             <div class="card-text">{{ date('d.m.Y', strtotime($post->created_at)) }}</div>
+            <hr class="divider">
+            <div class="card-text mb-1 mt-3">{!! $post->content !!}</div>
         </div>
-
         <div class="card-footer">
             <div class="row">
                 <div class="col">
-                    <p class="card-text mb-0">Komentáře</p>
+                    <p class="card-text mt-1">Komentáře</p>
                 </div>
                 <div class="col text-end">
                     @auth
@@ -110,8 +107,6 @@
                     @endauth
                 </div>
             </div>
-
-
             <div class="modal fade" id="addCommentModal" tabindex="-1" aria-labelledby="addCommentModalLabel"
                 aria-hidden="true">
                 <div class="modal-dialog">

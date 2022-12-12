@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
 use App\Models\Post;
+use App\Models\Comment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -27,14 +29,10 @@ class PostController extends Controller
         return redirect()->route('subforum', ['id' => $request->subforum_id]);
     }
 
-    function UploadPostImage(Request $request)
-    {
-    }
-
     function RedirectToPostPage($id)
     {
         $post = Post::find($id);
-        $comments = DB::table('comments')->where('post_id', $id)->orderBy('created_at', 'desc')->get();
+        $comments = Comment::where('post_id', $id)->orderBy('created_at', 'desc')->get();
         return view('post', [
             'post' => $post,
             'comments' => $comments,
@@ -43,9 +41,28 @@ class PostController extends Controller
 
     function DeletePost(Post $post)
     {
-        DB::table('comments')->where('post_id', $post->id)->delete();
-        DB::table('likes')->where('post_id', $post->id)->delete();
+        Comment::where('post_id', $post->id)->delete();
+        Like::where('post_id', $post->id)->delete();
         $post->delete();
         return redirect()->route('subforum', ['id' => $post->subforum_id]);
+    }
+
+    function RedirectToFavoritesPage()
+    {
+        $posts = Like::join('posts', 'likes.post_id', '=', 'posts.id')
+            ->where('likes.user_id', Auth::id())
+            ->orderBy('likes.created_at', 'desc')
+            ->get();
+        return view('favorites', [
+            'posts' => $posts,
+        ]);
+    }
+
+    function RedirectToMyPostsPage()
+    {
+        $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        return view('myposts', [
+            'posts' => $posts,
+        ]);
     }
 }
