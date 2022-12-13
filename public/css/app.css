@@ -26,20 +26,32 @@ body {
     .xd {
         margin-bottom: 5px;
     }
+
+    .post_card {
+        text-align: left;
+    }
+
+    img {
+        max-width: 100%;
+    }
+
+    .login {
+        margin-top: 5px;
+    }
+
+    .profile_settings {
+        margin-top: 7px;
+    }
 }
 
 @media (min-width: 991px) {
     .nav-footer {
         display: none;
     }
-}
 
-footer {
-    opacity: 70%;
-}
-
-.xd:hover {
-    color: white;
+    .post_card {
+        text-align: center;
+    }
 }
 
 .card_header {

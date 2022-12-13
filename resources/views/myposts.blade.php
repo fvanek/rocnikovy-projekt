@@ -4,6 +4,9 @@
         {{ $nav_title = 'Moje příspěvky' }}</p>
     <a href="{{ redirect()->back()->getTargetUrl() }}" class="btn btn-light mb-2"><i
             class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
+    @if ($posts->count() == 0)
+        <h5 class="card-title mb-0 text-center alert alert-danger">Žádné příspěvky</h5>
+    @endif
     @foreach ($posts as $post)
         <div class="card mb-2">
             <div class="card-header">

@@ -20,13 +20,15 @@
                     příspěvků
                 @endif
             </p>
+            <p class="card-text text-center mt-1">Založil <a
+                    href="{{ route('profile', $subforum->user->id) }}">{{ $subforum->user->name }}</a></p>
             @auth
                 <div class="mb-2">
-                    <button class="btn btn-primary" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
+                    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                         aria-expanded="false" aria-controls="collapseExample">
                         <i class="fa-solid fa-plus me-1"></i>Přidat příspěvek</button>
-                    @if ($subforum->user_id == Auth::id())
-                        <button type="button" class="btn btn-success" data-bs-toggle="modal"
+                    @if ($subforum->user_id == Auth::id() || Auth::user()->is_admin == 1)
+                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
                             data-bs-target="#editSubforumModal">
                             Upravit
                         </button>
@@ -118,7 +120,7 @@
         <div class="container">
             <div class="card mb-2">
                 <div class="card-header">
-                    <h5 class="card-title mb-0 text-center"><a class="card_header stretched-link link-dark"
+                    <h5 class="card-title mb-0"><a class="card_header stretched-link link-dark"
                             href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
                     </h5>
                 </div>

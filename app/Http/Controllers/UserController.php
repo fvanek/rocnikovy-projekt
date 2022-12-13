@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Like;
+use App\Models\Post;
 use App\Models\User;
+use App\Models\Comment;
+use App\Models\Subforum;
+use Termwind\Components\Dd;
+use Termwind\Components\Li;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +16,6 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Cookie;
 use Illuminate\Support\Facades\Storage;
 use Laravel\Socialite\Facades\Socialite;
-use Termwind\Components\Dd;
 
 class UserController extends Controller
 {
@@ -78,7 +83,6 @@ class UserController extends Controller
     function RedirectToProfilePage($id)
     {
         $user = User::find($id);
-        $posts = $user->posts()->paginate(10);
         return view('profile', [
             'user' => $user,
         ]);
@@ -109,7 +113,7 @@ class UserController extends Controller
         $user->save();
 
         sleep(1);
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
     function RedirectToGoogle()
@@ -143,16 +147,23 @@ class UserController extends Controller
 
     function DeleteProfile(Request $request)
     {
-        $user = User::find(Auth::user()->id);
+        $user = User::find($request->id);
 
         $avatar = $user->avatar;
         if ($avatar != 'avatars/default.png') {
             Storage::disk('public')->delete($avatar);
         }
 
+        Post::where('user_id', $request->id)->delete();
+        Subforum::where('user_id', $request->id)->delete();
+        Comment::where('user_id', $request->id)->delete();
+        Like::where('user_id', $request->id)->delete();
+
         $user->delete();
 
-        Auth::logout();
+        if (Auth::user()->id == $request->id) {
+            Auth::logout();
+        }
 
         $request->session()->invalidate();
 
@@ -160,6 +171,6 @@ class UserController extends Controller
 
         sleep(1);
 
-        return redirect()->route('home');
+        return redirect()->back();
     }
 }

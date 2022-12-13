@@ -22,6 +22,7 @@ return new class extends Migration
             $table->string('password');
             $table->string('avatar')->nullable();
             $table->text('bio')->nullable()->max(500);
+            $table->boolean('is_admin')->default(false);
             $table->rememberToken();
             $table->timestamps();
         });

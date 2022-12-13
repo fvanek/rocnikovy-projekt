@@ -15,63 +15,7 @@
     <!-- Styles -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
-
-        body {
-            background: linear-gradient(90deg, rgb(147, 15, 255) 2%, rgb(5, 49, 255) 100.7%);
-            font-family: 'Source Sans Pro', sans-serif;
-        }
-
-        .alert-fixed {
-            position: fixed;
-            top: 0px;
-            left: 0px;
-            width: 100%;
-            z-index: 9999;
-            border-radius: 0px
-        }
-
-        .nav_title {
-            display: none;
-        }
-
-        @media (max-width: 991px) {
-            .xd {
-                margin-bottom: 5px;
-            }
-
-            .post_card {
-                text-align: left;
-            }
-
-            img {
-                max-width: 100%;
-            }
-
-            .login {
-                margin-top: 5px;
-            }
-        }
-
-        @media (min-width: 991px) {
-            .nav-footer {
-                display: none;
-            }
-
-            .post_card {
-                text-align: center;
-            }
-        }
-
-        footer {
-            opacity: 70%;
-        }
-
-        .card_header {
-            text-decoration: none;
-        }
-    </style>
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
@@ -87,7 +31,7 @@
                 'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview', 'anchor', 'searchreplace',
                 'fullscreen', 'insertdatetime', 'table', 'help', 'wordcount'
             ],
-            toolbar: 'a11ycheck addcomment showcomments casechange checklist code formatpainter pageembed permanentpen table',
+            toolbar: 'backcolor | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
         });
     </script>
 
@@ -116,9 +60,12 @@
                     </li>
                 </ul>
                 <ul class="navbar-nav d-flex ms-auto">
-                    <li class="nav-item me-2">
+                    <li class="nav-item me-2 my-auto">
                         <a class="nav-link" data-bs-target="#searchModal" data-bs-toggle="modal" href="#"><i
-                                class="fa-solid fa-search me-1 my-auto"></i>Hledat</a>
+                                class="fa-solid fa-search me-1"></i>Hledat</a>
+                    </li>
+                    <li>
+                        <hr class="divider">
                     </li>
                     @auth
                         <li class="nav-item dropdown">
@@ -127,6 +74,9 @@
                                 <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="rounded-circle me-1"
                                     style="width: 30px; height: 30px;">
                                 {{ Auth::user()->name }}
+                                @if (Auth::user()->is_admin == 1)
+                                    <span class="badge bg-danger ms-1">(admin)</span>
+                                @endif
                             </a>
                             <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                                 <li>
@@ -142,6 +92,7 @@
                                 <li><a href="{{ route('posts/favorites') }}" class="dropdown-item"><i
                                             class="fa-solid fa-heart me-1"></i>Oblíbené
                                         příspěvky</a>
+                                </li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -163,10 +114,6 @@
                         </li>
                     @endauth
                 </ul>
-                <hr class="divider">
-                <div class="nav-footer mb-2">
-                    © 2022 Filip Vaněk
-                </div>
             </div>
         </div>
     </nav>

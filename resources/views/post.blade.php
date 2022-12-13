@@ -6,7 +6,7 @@
         <a href="{{ route('subforum', ['id' => $post->subforum->id]) }}" class="btn btn-light"><i
                 class="fa-solid fa-arrow-left me-1"></i>Zpět na subforum</a>
         @auth
-            @if (Auth::user()->id == $post->user_id)
+            @if (Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1)
                 <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deletePostModal">
                     <i class="fa-solid fa-trash me-1"></i>Smazat příspěvek</button>
 
@@ -142,7 +142,7 @@
                             </div>
                             <div class="col text-end">
                                 @auth
-                                    @if (Auth::user()->id == $comment->user_id)
+                                    @if (Auth::user()->id == $comment->user_id || Auth::user()->is_admin == 1)
                                         <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                             data-bs-target="#deleteCommentModal{{ $comment->id }}">
                                             <i class="fa-solid fa-trash"></i></button>
