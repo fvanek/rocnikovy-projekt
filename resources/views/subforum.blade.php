@@ -2,8 +2,8 @@
 @section('content')
     <p class="nav_title">
         {{ $nav_title = 'Subforum' }}</p>
-    <a href="{{ route('subforums') }}" class="btn btn-light mb-2"><i class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
-    <div class="card mb-2">
+    <a href="{{ route('subforums') }}" class="btn btn-light mb-2 shadow-lg"><i class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
+    <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title mb-0 text-center">{{ $subforum->name }}</h5>
         </div>
@@ -66,7 +66,7 @@
                                 </div>
                             </div>
                         </div>
-                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                        <button type="button" class="btn btn-danger subforum_delete" data-bs-toggle="modal"
                             data-bs-target="#deleteSubforumModal">
                             Smazat
                         </button>
@@ -118,7 +118,7 @@
     </div>
     @foreach ($posts as $post)
         <div class="container">
-            <div class="card mb-2">
+            <div class="card mb-2 shadow-lg">
                 <div class="card-header">
                     <h5 class="card-title mb-0"><a class="card_header stretched-link link-dark"
                             href="{{ route('post', $post->id) }}">{{ $post->title }}</a>

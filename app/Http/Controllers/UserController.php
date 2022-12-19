@@ -83,8 +83,10 @@ class UserController extends Controller
     function RedirectToProfilePage($id)
     {
         $user = User::find($id);
+        $posts = Post::where('user_id', $id);
         return view('profile', [
             'user' => $user,
+            'posts' => $posts,
         ]);
     }
 

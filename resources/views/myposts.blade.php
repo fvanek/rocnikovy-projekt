@@ -8,7 +8,7 @@
         <h5 class="card-title mb-0 text-center alert alert-danger">Žádné příspěvky</h5>
     @endif
     @foreach ($posts as $post)
-        <div class="card mb-2">
+        <div class="card mb-2 shadow-lg">
             <div class="card-header">
                 <h5 class="card-title mb-0 text-center"><a class="card_header stretched-link link-dark"
                         href="{{ route('post', $post->id) }}">{{ $post->title }}</a>

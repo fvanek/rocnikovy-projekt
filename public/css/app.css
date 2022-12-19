@@ -44,6 +44,11 @@ body {
     }
 }
 
+@media (max-width: 377px) {
+    .subforum_delete {
+        margin-top: 5px;
+    }
+}
 @media (min-width: 991px) {
     .nav-footer {
         display: none;
@@ -56,4 +61,9 @@ body {
 
 .card_header {
     text-decoration: none;
+}
+
+footer {
+    opacity: 1;
+    transition: opacity 0.25s;
 }

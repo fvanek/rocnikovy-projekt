@@ -2,7 +2,7 @@
 @section('content')
     <p class="nav_title">
         {{ $nav_title = 'Subfora' }}</p>
-    <button type="button" class="btn btn-success mb-2" data-bs-toggle="modal"
+    <button type="button" class="btn btn-success mb-2 shadow-lg" data-bs-toggle="modal"
         @auth data-bs-target="#createSubforumModal" @endauth data-bs-target="#notLoggedInSubforumModal">
         Vytvořit subforum
     </button>
@@ -73,14 +73,14 @@
         @endif
     @endauth
     @if ($subforums->count() == 0)
-        <div class="card mb-2">
+        <div class="card mb-2 shadow-lg">
             <div class="card-header">
                 <h5 class="card-title">Žádné subfora</h5>
             </div>
         </div>
     @else
         @foreach ($subforums as $subforum)
-            <div class="card mb-2">
+            <div class="card mb-2 shadow-lg">
                 <div class="card-header position-relative">
                     <h5 class="card-title text-center"><a class="card_header stretched-link link-dark"
                             href="{{ route('subforum', $subforum->id) }}">{{ $subforum->name }}</a></h5>

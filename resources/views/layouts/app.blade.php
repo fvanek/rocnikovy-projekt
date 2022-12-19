@@ -6,6 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{{ config('app.name') }}</title>
 
+    <!-- Favicon -->
+    <link rel="icon" href="{{ asset('favicon.ico') }}">
+
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
@@ -13,9 +16,8 @@
     <script src="{{ asset('js/app.js') }}" defer></script>
 
     <!-- Styles -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" crossorigin="anonymous">
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+    <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
 
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
@@ -31,7 +33,7 @@
                 'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview', 'anchor', 'searchreplace',
                 'fullscreen', 'insertdatetime', 'table', 'help', 'wordcount'
             ],
-            toolbar: 'backcolor | bold italic underline | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            toolbar: 'backcolor | bold italic underline | h1 h2 h3 | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
         });
     </script>
 
@@ -41,7 +43,7 @@
 </head>
 
 <body class="antialiased">
-    <nav class="navbar navbar-expand-lg bg-light sticky-top">
+    <nav class="navbar navbar-expand-lg bg-light sticky-top rounded mt-2 mx-2 shadow-lg">
         <div class="container-fluid">
             <span class="navbar-brand">{{ $nav_title }}</span>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
@@ -61,11 +63,20 @@
                 </ul>
                 <ul class="navbar-nav d-flex ms-auto">
                     <li class="nav-item me-2 my-auto">
-                        <a class="nav-link" data-bs-target="#searchModal" data-bs-toggle="modal" href="#"><i
+                        <div class="collapse collapse-horizontal" id="searchCollapse">
+                            <form action="{{ route('search') }}" method="GET" class="d-flex">
+                                <input class="form-control me-2" type="search" name="search" placeholder="Hledat"
+                                    aria-label="Search">
+                                <button class="btn btn-outline-success" type="submit">Hledat</button>
+                            </form>
+                        </div>
+                    <li>
+                    <li class="nav-item me-2 my-auto">
+                        <a class="nav-link" data-bs-target="#searchCollapse" data-bs-toggle="collapse" href="#"><i
                                 class="fa-solid fa-search me-1"></i>Hledat</a>
                     </li>
-                    <li>
-                        <hr class="divider">
+
+                    <hr class="divider">
                     </li>
                     @auth
                         <li class="nav-item dropdown">
@@ -117,33 +128,37 @@
             </div>
         </div>
     </nav>
-    <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="searchModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="searchModalLabel">Hledat</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form action="{{ route('search') }}" method="GET">
-                        <div class="input-group mb-3">
-                            <input type="text" class="form-control" name="search" value="{{ old('search') }}"
-                                placeholder="Hledejte příspěvky, uživatele, subfora" aria-label="Hledat"
-                                aria-describedby="button-addon2" aria-required="true" required>
-                            <button class="btn btn-outline-secondary" type="submit" id="button-addon2"><i
-                                    class="fa-solid fa-search"></i></button>
-                        </div>
-                    </form>
-                </div>
-            </div>
-        </div>
-    </div>
     <div class="container mt-4">
         @yield('content')
     </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-OERcA2EqjJCMA+/3y+gxIOqMEjwtxJY7qPCqsdltbNJuaOe923+mo//f6V8Qbsw3" crossorigin="anonymous">
+
+    <footer>
+        <div class="d-flex justify-content-between py-3 bg-white fixed-bottom rounded mb-2 mx-2 shadow-lg">
+            <div class="align-items-center ms-4">
+                <span class="mb-3 mb-md-0 text-muted">&copy; 2022 Filip Vaněk</span>
+            </div>
+
+            <ul class="nav justify-content-end list-unstyled">
+                <li class="ms-3"><a class="text-muted" href="https://twitter.com/skeroparno" target="_blank"><i
+                            class="fa-brands fa-twitter"></i></a></li>
+                <li class="ms-3"><a class="text-muted" href="https://www.instagram.com/_filip.vanek_/"
+                        target="_blank"><i class="fa-brands fa-instagram"></i></a></li>
+                <li class="ms-3 me-3"><a class="text-muted" href="https://www.facebook.com/skeroparno"
+                        target="_blank"><i class="fa-brands fa-facebook"></i>
+                    </a></li>
+            </ul>
+        </div>
+    </footer>
+    <script>
+        window.addEventListener("scroll", function() {
+            if (window.scrollY + 20 >= document.body.offsetHeight - window.innerHeight) {
+                document.querySelector('footer').style.opacity = '0';
+            } else {
+                document.querySelector('footer').style.opacity = '1';
+            }
+        });
     </script>
+    <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
 </body>
 
 </html>

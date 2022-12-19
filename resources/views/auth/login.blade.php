@@ -7,15 +7,15 @@
             <div class="container">
                 <div class="row d-flex justify-content-center align-items-center h-100">
                     <div class="col-12 col-md-8 col-lg-6 col-xl-5">
-                        <div class="card bg-dark text-white" style="border-radius: 1rem;">
+                        <div class="card shadow-lg" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
 
                                 <div class="mb-md-5 mt-md-4 pb-5">
 
                                     <h2 class="fw-bold mb-2 text-uppercase">Přihlášení</h2>
-                                    <p class="text-white-50 mb-5">Zadejte prosím váš email a heslo</p>
+                                    <p class="text-50 mb-5">Zadejte prosím váš email a heslo</p>
 
-                                    <div class="form-outline form-white mb-4">
+                                    <div class="form-outline form-dark mb-4">
                                         <input type="email" id="email" name="email"
                                             class="form-control form-control-lg"
                                             @if (Cookie::has('remember_email')) value="{{ Cookie::get('remember_email') }}"
@@ -26,24 +26,24 @@
                                         @enderror
                                     </div>
 
-                                    <div class="form-outline form-white mb-2">
+                                    <div class="form-outline form-dark mb-2">
                                         <input type="password" id="password" name="password"
                                             class="form-control form-control-lg"
                                             @if (Cookie::has('remember_password')) value="{{ Cookie::get('remember_password') }}"
                                             @else value="{{ old('password') }}" @endif />
                                         <label class="form-label mt-1" for="password">Heslo</label>
                                     </div>
-                                    <p class="small mb-3 pb-lg-2"><a class="text-white-50" href="#!">Nevíte
+                                    <p class="small mb-3 pb-lg-2"><a class="text-50" href="#!">Nevíte
                                             heslo?</a></p>
                                     <div class="form-check d-flex justify-content-center mb-4">
                                         <input class="form-check-input" type="checkbox" id="remember" name="remember"
                                             value="" @if (Cookie::has('remember_email')) checked @endif />
-                                        <label class="form-check label text-white-50" for="remember">
+                                        <label class="form-check label text-50" for="remember">
                                             Zapamatovat si mě
                                         </label>
                                     </div>
-                                    <button class="btn btn-outline-light btn-lg px-5" type="submit">Přihlásit</button>
-                                    <a class="btn btn-outline-light btn-lg mt-3" href="{{ route('googlelogin') }}"
+                                    <button class="btn btn-outline-dark btn-lg px-5" type="submit">Přihlásit</button>
+                                    <a class="btn btn-outline-dark btn-lg mt-3" href="{{ route('googlelogin') }}"
                                         role="button" name="google_login" style="text-transform:none">
                                         <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
                                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
@@ -52,8 +52,9 @@
                                 </div>
 
                                 <div>
-                                    <p class="mb-0">Nemáte účet? <a href="/register"
-                                            class="text-white-50 fw-bold">Zaregistrovat se</a>
+                                    <p class="mb-0">Nemáte účet? <a href="{{ route('register') }}"
+                                            class="text-50 fw-bold">Zaregistrovat
+                                            se</a>
                                     </p>
                                 </div>
 

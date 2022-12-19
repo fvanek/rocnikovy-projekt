@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
     <p class="nav_title">{{ $nav_title = 'Výsledky hledání' }}</p>
-    <div class="card mb-2">
+    <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title mb-0 text-center">Příspěvky</h5>
         </div>
@@ -37,7 +37,7 @@
         </div>
     </div>
 
-    <div class="card mb-2">
+    <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title mb-0 text-center">Subfora</h5>
         </div>
@@ -71,7 +71,7 @@
         </div>
     </div>
 
-    <div class="card mb-2">
+    <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title text-center">Uživatelé</h5>
         </div>

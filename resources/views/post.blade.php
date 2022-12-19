@@ -4,9 +4,11 @@
         {{ $nav_title = 'Příspěvek' }}</p>
     <div class="mb-2">
         <a href="{{ route('subforum', ['id' => $post->subforum->id]) }}" class="btn btn-light"><i
-                class="fa-solid fa-arrow-left me-1"></i>Zpět na subforum</a>
+                class="fa-solid fa-arrow-left me-1 shadow-lg"></i>Zpět na subforum</a>
         @auth
-            @if (Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1)
+            @if (Auth::user()->id == $post->user_id ||
+                Auth::user()->is_admin == 1 ||
+                Auth::user()->id == $post->subforum->user_id)
                 <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deletePostModal">
                     <i class="fa-solid fa-trash me-1"></i>Smazat příspěvek</button>
 
@@ -35,7 +37,7 @@
             @endif
         @endauth
     </div>
-    <div class="card mb-2">
+    <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title post_card mb-1">
                 {{ $post->title }}
@@ -89,7 +91,9 @@
             <div class="card-text">
                 <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
                     class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
+                <a href="{{ route('profile', $post->user_id) }}" class="text-dark">
+                    {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
+                </a>
             </div>
             <div class="card-text">{{ date('d.m.Y', strtotime($post->created_at)) }}</div>
             <hr class="divider">
@@ -142,7 +146,9 @@
                             </div>
                             <div class="col text-end">
                                 @auth
-                                    @if (Auth::user()->id == $comment->user_id || Auth::user()->is_admin == 1)
+                                    @if (Auth::user()->id == $comment->user_id ||
+                                        Auth::user()->is_admin == 1 ||
+                                        Auth::user()->id == $post->subforum->user_id)
                                         <button class="btn btn-danger" type="button" data-bs-toggle="modal"
                                             data-bs-target="#deleteCommentModal{{ $comment->id }}">
                                             <i class="fa-solid fa-trash"></i></button>
@@ -180,6 +186,7 @@
                             </div>
                         </div>
                         <div class="card-text mt-2">
+                            <hr class="divider">
                             <img src="{{ asset('storage/' .DB::table('users')->where('id', $comment->user_id)->value('avatar')) }}"
                                 class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
                             {{ DB::table('users')->where('id', $comment->user_id)->value('name') }}
