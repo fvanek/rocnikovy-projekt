@@ -1,8 +1,6 @@
-@extends('layouts.app')
-@section('content')
-    <p class="nav_title">{{ $nav_title = 'Profil' }}</p>
-    @isset(Auth::user()->id)
-        @if (Auth::user()->id == $user->id)
+<x-layout>
+    @auth
+        @if (Auth::user()->id == $user->id || Auth::user()->is_admin == 1)
             <div class="row">
                 <div class="col-md-3">
                     <div class="card shadow-lg">
@@ -91,7 +89,173 @@
                     </div>
                 </div>
             </div>
-        @endisset
+        @elseif(Auth::user()->id == $user->id && Auth::user()->is_admin == 0)
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="card shadow-lg">
+                        <div class="card-header">
+                            <h5 class="card-title text-center">{{ $user->name }}</h5>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <img src="{{ asset('storage/' . $user->avatar) }}"
+                                            class="img rounded-circle mx-auto d-block" width="100px" height="100px"
+                                            alt="Profile Picture">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <h6>{{ $user->bio }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <h6>{{ $user->email }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-1">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <h6>Počet příspěvků: {{ DB::table('posts')->where('user_id', $user->id)->count() }}
+                                        </h6>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <h6>Členem od {{ date('d.m.Y', strtotime($user->created_at)) }}</h6>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        @elseif(Auth::user()->id != $user->id)
+            <div class="card shadow-lg">
+                <div class="card-header">
+                    <h5 class="card-title text-center">{{ $user->name }}</h5>
+                </div>
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <img src="{{ asset('storage/' . $user->avatar) }}" class="img rounded-circle mx-auto d-block"
+                                    width="100px" height="100px" alt="Profile Picture">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                @if ($user->bio != null || strlen($user->bio) > 0)
+                                    <h6>{{ $user->bio }}</h6>
+                                @else
+                                    <h6>Uživatel nemá žádné bio.</h6>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-1">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h6>Počet příspěvků: {{ $user->posts()->count() }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mt-3">
+                        <div class="col-md-12">
+                            <div class="text-center">
+                                <h6>Členem od {{ date('d.m.Y', strtotime($user->created_at)) }}</h6>
+                            </div>
+                        </div>
+                    </div>
+                    @isset(Auth::user()->is_admin)
+                        @if (Auth::user()->is_admin == 1)
+                            <div class="row mt-3">
+                                <div class="col-md-12">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                            data-bs-target="#deleteModal">
+                                            <i class="fa-solid fa-trash me-2"></i>Smazat účet
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        @endif
+                    @endisset
+                    <div class="modal fade text-dark" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+                        aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel"><i
+                                            class="fa-solid fa-trash me-2"></i>Smazat účet</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Opravdu chcete smazat účet?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+                                    <form action="/profile/delete" method="POST">
+                                        @csrf
+                                        <input type="hidden" name="id" value="{{ $user->id }}">
+                                        <button type="submit" class="btn btn-danger">Smazat</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="card mt-3 shadow-lg">
+                <div class="card-header">
+                    <h5 class="card-title text-center">Příspěvky</h5>
+                </div>
+                <div class="card-body">
+                    @if ($user->posts()->count() > 0)
+                        @foreach ($user->posts()->orderBy('created_at', 'desc')->get() as $post)
+                            <div class="card mb-2">
+                                <div class="card-header">
+                                    <h5 class="card-title mb-0"><a class="card_header stretched-link link-dark"
+                                            href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
+                                    </h5>
+                                </div>
+                                <div class="card-body">
+                                    <div class="card-text">
+                                        @if (strlen($post->content) > 100)
+                                            {!! substr($post->content, 0, 100) . '...' !!}
+                                        @else
+                                            {!! $post->content !!}
+                                        @endif
+                                    </div>
+                                    <div class="card-text mt-3">
+                                        <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
+                                            class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
+                                        {{ DB::table('users')->where('id', $post->user_id)->value('name') }} -
+                                        {{ date('d.m.Y', strtotime($post->created_at)) }}
+                                    </div>
+                                </div>
+                            </div>
+                        @endforeach
+                    @else
+                        <h5 class="card-title mb-0 text-center alert alert-danger">Uživatel zatím nepřidal žádný příspěvek</h5>
+                    @endif
+                </div>
+            </div>
+            </div>
+            </div>
+        @endif
     @else
         <div class="card shadow-lg">
             <div class="card-header">
@@ -128,44 +292,6 @@
                     <div class="col-md-12">
                         <div class="text-center">
                             <h6>Členem od {{ date('d.m.Y', strtotime($user->created_at)) }}</h6>
-                        </div>
-                    </div>
-                </div>
-                @isset(Auth::user()->is_admin)
-                    @if (Auth::user()->is_admin == 1)
-                        <div class="row mt-3">
-                            <div class="col-md-12">
-                                <div class="text-center">
-                                    <button type="button" class="btn btn-danger" data-bs-toggle="modal"
-                                        data-bs-target="#deleteModal">
-                                        <i class="fa-solid fa-trash me-2"></i>Smazat účet
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    @endif
-                @endisset
-                <div class="modal fade text-dark" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
-                    aria-hidden="true">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <h5 class="modal-title" id="deleteModalLabel"><i
-                                        class="fa-solid fa-trash me-2"></i>Smazat účet</h5>
-                                <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                    aria-label="Close"></button>
-                            </div>
-                            <div class="modal-body text-center">
-                                Opravdu chcete smazat účet?
-                            </div>
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
-                                <form action="/profile/delete" method="POST">
-                                    @csrf
-                                    <input type="hidden" name="id" value="{{ $user->id }}">
-                                    <button type="submit" class="btn btn-danger">Smazat</button>
-                                </form>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -206,5 +332,7 @@
                 @endif
             </div>
         </div>
-    @endif
-@endsection
+        </div>
+        </div>
+    @endauth
+</x-layout>

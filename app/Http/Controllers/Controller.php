@@ -14,8 +14,8 @@ class Controller extends BaseController
 
     function home()
     {
-        return view('home', [
-            'posts' => Post::all()->sortByDesc('created_at'),
+        return view('components.posts', [
+            'posts' => Post::orderBy('created_at', 'desc')->get(),
         ]);
     }
 }

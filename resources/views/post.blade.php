@@ -1,7 +1,4 @@
-@extends('layouts.app')
-@section('content')
-    <p class="nav_title">
-        {{ $nav_title = 'Příspěvek' }}</p>
+<x-layout>
     <div class="mb-2">
         <a href="{{ route('subforum', ['id' => $post->subforum->id]) }}" class="btn btn-light"><i
                 class="fa-solid fa-arrow-left me-1 shadow-lg"></i>Zpět na subforum</a>
@@ -189,7 +186,8 @@
                             <hr class="divider">
                             <img src="{{ asset('storage/' .DB::table('users')->where('id', $comment->user_id)->value('avatar')) }}"
                                 class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                            {{ DB::table('users')->where('id', $comment->user_id)->value('name') }}
+                            <a href="{{ route('profile', $comment->user_id) }}"
+                                class="text-dark">{{ DB::table('users')->where('id', $comment->user_id)->value('name') }}</a>
                         </div>
                         <div class="card-text">
                             {{ date('d.m.Y', strtotime($comment->created_at)) }}
@@ -199,4 +197,4 @@
             @endforeach
         </div>
     </div>
-@endsection
+</x-layout>

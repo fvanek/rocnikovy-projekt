@@ -53,7 +53,7 @@ class PostController extends Controller
             ->where('likes.user_id', Auth::id())
             ->orderBy('likes.created_at', 'desc')
             ->get();
-        return view('favorites', [
+        return view('components.posts', [
             'posts' => $posts,
         ]);
     }
@@ -61,7 +61,7 @@ class PostController extends Controller
     function RedirectToMyPostsPage()
     {
         $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        return view('myposts', [
+        return view('components.posts', [
             'posts' => $posts,
         ]);
     }

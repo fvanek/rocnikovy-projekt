@@ -1,6 +1,4 @@
-@extends('layouts.app')
-@section('content')
-    <p class="nav_title">{{ $nav_title = 'Přihlášení' }}</p>
+<x-layout>
     <form action="login" method="POST" enctype="multipart/form-data">
         @csrf
         <section class="vh-100">
@@ -45,7 +43,8 @@
                                     <button class="btn btn-outline-dark btn-lg px-5" type="submit">Přihlásit</button>
                                     <a class="btn btn-outline-dark btn-lg mt-3" href="{{ route('googlelogin') }}"
                                         role="button" name="google_login" style="text-transform:none">
-                                        <img width="20px" style="margin-bottom:3px; margin-right:5px" alt="Google sign-in"
+                                        <img width="20px" style="margin-bottom:3px; margin-right:5px"
+                                            alt="Google sign-in"
                                             src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/53/Google_%22G%22_Logo.svg/512px-Google_%22G%22_Logo.svg.png" />
                                         Přihlásit se přes Google
                                     </a>
@@ -65,4 +64,4 @@
             </div>
         </section>
     </form>
-@endsection
+</x-layout>

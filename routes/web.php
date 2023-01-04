@@ -25,12 +25,15 @@ Route::get('/', [Controller::class, 'home'])->name('home');
 //User
 Route::get('/login', [UserController::class, 'RedirectToLoginPage'])->name('login');
 Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name('register');
-Route::get('/profile/{id}', [UserController::class, 'RedirectToProfilePage'])->name('profile');
 Route::post('/login', [UserController::class, 'Login'])->name('login');
 Route::post('/register', [UserController::class, 'Register'])->name('register');
 Route::post('/logout', [UserController::class, 'Logout'])->name('logout');
-Route::post('/profile/update', [UserController::class, 'UpdateProfile'])->name('profile/update');
-Route::post('/profile/delete', [UserController::class, 'DeleteProfile'])->name('profile/delete');
+
+Route::group(['prefix' => 'profile'], function () {
+    Route::get('/{id}', [UserController::class, 'RedirectToProfilePage'])->name('profile');
+    Route::post('/update', [UserController::class, 'UpdateProfile'])->name('profile/update');
+    Route::post('/delete', [UserController::class, 'DeleteProfile'])->name('profile/delete');
+});
 
 //Socialite
 Route::get('/googlelogin', [UserController::class, 'RedirectToGoogle'])->name('googlelogin');

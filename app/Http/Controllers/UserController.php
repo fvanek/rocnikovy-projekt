@@ -77,7 +77,7 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->back();
+        return redirect()->route('home');
     }
 
     function RedirectToProfilePage($id)
@@ -95,7 +95,7 @@ class UserController extends Controller
         $request->validate([
             'name' => 'required|string|max:255|unique:users,name,' . Auth::user()->id,
             'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-            'bio' => 'string|max:500',
+            'bio' => 'string|max:500|nullable',
         ]);
 
         $user = User::find(Auth::user()->id);
@@ -111,11 +111,15 @@ class UserController extends Controller
         }
 
         $user->name = $request->name;
-        $user->bio = $request->bio;
+        if ($request->bio != null)
+            $user->bio = $request->bio;
+        else
+            $user->bio = null;
+
         $user->save();
 
         sleep(1);
-        return redirect()->route('home');
+        return redirect()->route('profile', Auth::user()->id);
     }
 
     function RedirectToGoogle()

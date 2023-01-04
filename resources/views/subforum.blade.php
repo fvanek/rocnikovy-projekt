@@ -1,7 +1,4 @@
-@extends('layouts.app')
-@section('content')
-    <p class="nav_title">
-        {{ $nav_title = 'Subforum' }}</p>
+<x-layout>
     <a href="{{ route('subforums') }}" class="btn btn-light mb-2 shadow-lg"><i class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
     <div class="card mb-2 shadow-lg">
         <div class="card-header">
@@ -20,9 +17,12 @@
                     příspěvků
                 @endif
             </p>
-            <p class="card-text text-center mt-1">Založil <a
-                    href="{{ route('profile', $subforum->user->id) }}">{{ $subforum->user->name }}</a></p>
-            @auth
+            <p class="card-text text-center mt-1">Založil <a href="{{ route('profile', $subforum->user_id) }}"
+                    class="text-dark" style="text-decoration: none;"><img
+                        src="{{ asset('storage/' .DB::table('users')->where('id', $subforum->user_id)->value('avatar')) }}"
+                        class="img rounded-circle mb-1" width="20px" height="20px" alt="Profile Picture">
+                    {{ DB::table('users')->where('id', $subforum->user_id)->value('name') }}</a>
+                @auth
                 <div class="mb-2">
                     <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
                         aria-expanded="false" aria-controls="collapseExample">
@@ -84,7 +84,8 @@
                                         Opravdu chcete smazat subforum?
                                     </div>
                                     <div class="modal-footer">
-                                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+                                        <button type="button" class="btn btn-secondary"
+                                            data-bs-dismiss="modal">Zavřít</button>
                                         <form action="{{ route('subforum/delete', $subforum->id) }}" method="POST">
                                             @csrf
                                             @method('DELETE')
@@ -142,4 +143,4 @@
             </div>
         </div>
     @endforeach
-@endsection
+</x-layout>

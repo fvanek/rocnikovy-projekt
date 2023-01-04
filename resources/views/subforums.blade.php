@@ -1,7 +1,4 @@
-@extends('layouts.app')
-@section('content')
-    <p class="nav_title">
-        {{ $nav_title = 'Subfora' }}</p>
+<x-layout>
     <button type="button" class="btn btn-success mb-2 shadow-lg" data-bs-toggle="modal"
         @auth data-bs-target="#createSubforumModal" @endauth data-bs-target="#notLoggedInSubforumModal">
         Vytvořit subforum
@@ -130,4 +127,4 @@
     @endif
     </div>
     </div>
-@endsection
+</x-layout>

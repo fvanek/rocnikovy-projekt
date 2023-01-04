@@ -1,6 +1,4 @@
-@extends('layouts.app')
-@section('content')
-    <p class="nav_title">{{ $nav_title = 'Výsledky hledání' }}</p>
+<x-layout>
     <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title mb-0 text-center">Příspěvky</h5>
@@ -105,4 +103,4 @@
             @endif
         </div>
     </div>
-@endsection
+</x-layout>
