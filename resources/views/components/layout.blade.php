@@ -12,9 +12,6 @@
     <!-- CSRF Token -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}" defer></script>
-
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
@@ -42,14 +39,16 @@
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 </head>
 
-<body class="antialiased">
+<body class="antialiased bg-secondary">
     <x-nav />
     <div class="container mt-4">
         {{ $slot }}
     </div>
     <x-footer />
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
-
+    <script src="{{ asset('js/app.js') }}" defer></script>
+    <script src="https://cdn.jsdeliver.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
+        data-turbolinks-eval="false"></script>
 </body>
 
 </html>

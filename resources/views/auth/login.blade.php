@@ -8,7 +8,7 @@
                         <div class="card shadow-lg" style="border-radius: 1rem;">
                             <div class="card-body p-5 text-center">
 
-                                <div class="mb-md-5 mt-md-4 pb-5">
+                                <div class="mt-md-4 pb-5">
 
                                     <h2 class="fw-bold mb-2 text-uppercase">Přihlášení</h2>
                                     <p class="text-50 mb-5">Zadejte prosím váš email a heslo</p>
@@ -30,6 +30,9 @@
                                             @if (Cookie::has('remember_password')) value="{{ Cookie::get('remember_password') }}"
                                             @else value="{{ old('password') }}" @endif />
                                         <label class="form-label mt-1" for="password">Heslo</label>
+                                        @error('password')
+                                            <p class="text-danger">{{ $message }}</p>
+                                        @enderror
                                     </div>
                                     <p class="small mb-3 pb-lg-2"><a class="text-50" href="#!">Nevíte
                                             heslo?</a></p>
@@ -49,14 +52,9 @@
                                         Přihlásit se přes Google
                                     </a>
                                 </div>
-
-                                <div>
-                                    <p class="mb-0">Nemáte účet? <a href="{{ route('register') }}"
-                                            class="text-50 fw-bold">Zaregistrovat
-                                            se</a>
-                                    </p>
-                                </div>
-
+                                <p>Nemáte účet? <a href="{{ route('register') }}" class="text-50 fw-bold">Zaregistrovat
+                                        se</a>
+                                </p>
                             </div>
                         </div>
                     </div>

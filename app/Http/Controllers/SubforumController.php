@@ -6,6 +6,7 @@ use Reflector;
 use App\Model\Post;
 use App\Models\Subforum;
 use Termwind\Components\Dd;
+use App\Models\SubforumLike;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
@@ -79,5 +80,25 @@ class SubforumController extends Controller
         }
         $subforum->save();
         return redirect()->route('subforum', $subforum->id);
+    }
+
+    function LikeSubforum(Request $request)
+    {
+        if (!Auth::check())
+            return redirect()->route('login');
+
+        $user = Auth::user();
+
+        $like = SubforumLike::where('subforum_id', $request->subforum_id)->where('user_id', Auth::id())->first();
+        if ($like == null) {
+            $like = new SubforumLike();
+            $like->subforum_id = $request->subforum_id;
+            $like->user_id = Auth::id();
+            $like->save();
+            return response()->json(['success' => true, 'message' => 'Like added']);
+        } else {
+            $like->delete();
+            return response()->json(['success' => true, 'message' => 'Like removed']);
+        }
     }
 }

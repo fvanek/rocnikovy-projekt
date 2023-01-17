@@ -1,12 +1,7 @@
-@import url("https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
 
 body {
-    background: linear-gradient(
-        90deg,
-        rgb(147, 15, 255) 2%,
-        rgb(5, 49, 255) 100.7%
-    );
-    font-family: "Source Sans Pro", sans-serif;
+    font-family: "Roboto Mono", monospace;
 }
 
 .alert-fixed {
@@ -42,6 +37,10 @@ body {
     .profile_settings {
         margin-top: 7px;
     }
+
+    footer {
+        display: none;
+    }
 }
 
 @media (max-width: 377px) {
@@ -61,11 +60,6 @@ body {
 
 .card_header {
     text-decoration: none;
-}
-
-footer {
-    opacity: 1;
-    transition: opacity 0.25s;
 }
 
 .footericons {

@@ -12,7 +12,7 @@ class SearchController extends Controller
     public function Search(Request $request)
     {
         $request->validate([
-            'search' => 'required'
+            'search' => 'required|string'
         ]);
         $search = $request->input('search');
         $posts = Post::where('title', 'like', '%' . $search . '%')->get();

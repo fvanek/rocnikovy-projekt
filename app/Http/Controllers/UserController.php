@@ -67,6 +67,10 @@ class UserController extends Controller
 
             return redirect()->intended();
         }
+
+        return back()->withErrors([
+            'password' => 'Špatný email nebo heslo.',
+        ]);
     }
 
     function Logout(Request $request)

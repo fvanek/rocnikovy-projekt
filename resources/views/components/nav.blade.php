@@ -1,4 +1,4 @@
-<nav class="navbar navbar-expand-lg bg-light sticky-top rounded mt-2 mx-2 shadow-lg">
+<nav class="navbar navbar-expand-lg bg-light sticky-top rounded mt-2 mx-2 shadow">
     <div class="container-fluid">
         <span class="navbar-brand">{{ config('app.name') }}</span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"

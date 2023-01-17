@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\Comment;
+use App\Models\PostLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -42,14 +43,16 @@ class PostController extends Controller
     function DeletePost(Post $post)
     {
         Comment::where('post_id', $post->id)->delete();
-        Like::where('post_id', $post->id)->delete();
+        PostLike::where('post_id', $post->id)->delete();
         $post->delete();
         return redirect()->route('subforum', ['id' => $post->subforum_id]);
     }
 
     function RedirectToFavoritesPage()
     {
-        $posts = Like::join('posts', 'likes.post_id', '=', 'posts.id')
+        if (!Auth::check())
+            return redirect()->route('login');
+        $posts = PostLike::join('posts', 'likes.post_id', '=', 'posts.id')
             ->where('likes.user_id', Auth::id())
             ->orderBy('likes.created_at', 'desc')
             ->get();
@@ -60,9 +63,29 @@ class PostController extends Controller
 
     function RedirectToMyPostsPage()
     {
+        if (!Auth::check())
+            return redirect()->route('login');
         $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         return view('components.posts', [
             'posts' => $posts,
         ]);
+    }
+
+    function LikePost(Request $request)
+    {
+        if (!Auth::check())
+            return redirect()->route('login');
+
+        $like = PostLike::where('post_id', $request->post_id)->where('user_id', Auth::id())->first();
+        if ($like == null) {
+            $like = new PostLike();
+            $like->post_id = $request->post_id;
+            $like->user_id = Auth::id();
+            $like->save();
+            return response()->json(['success' => true, 'message' => 'Like added']);
+        } else {
+            $like->delete();
+            return response()->json(['success' => true, 'message' => 'Like removed']);
+        }
     }
 }

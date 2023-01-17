@@ -56,7 +56,8 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-12">
-                                    <form action="{{ route('profile/update') }}" method="POST" enctype="multipart/form-data">
+                                    <form action="{{ route('profile/update') }}" method="POST"
+                                        enctype="multipart/form-data">
                                         @csrf
                                         <div class="mb-3">
                                             <label for="avatar" class="form-label">Profilová fotka</label>
@@ -148,8 +149,9 @@
                     <div class="row">
                         <div class="col-md-12">
                             <div class="text-center">
-                                <img src="{{ asset('storage/' . $user->avatar) }}" class="img rounded-circle mx-auto d-block"
-                                    width="100px" height="100px" alt="Profile Picture">
+                                <img src="{{ asset('storage/' . $user->avatar) }}"
+                                    class="img rounded-circle mx-auto d-block" width="100px" height="100px"
+                                    alt="Profile Picture">
                             </div>
                         </div>
                     </div>
@@ -206,7 +208,8 @@
                                     Opravdu chcete smazat účet?
                                 </div>
                                 <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Zavřít</button>
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Zavřít</button>
                                     <form action="/profile/delete" method="POST">
                                         @csrf
                                         <input type="hidden" name="id" value="{{ $user->id }}">
@@ -217,43 +220,6 @@
                         </div>
                     </div>
                 </div>
-            </div>
-            <div class="card mt-3 shadow-lg">
-                <div class="card-header">
-                    <h5 class="card-title text-center">Příspěvky</h5>
-                </div>
-                <div class="card-body">
-                    @if ($user->posts()->count() > 0)
-                        @foreach ($user->posts()->orderBy('created_at', 'desc')->get() as $post)
-                            <div class="card mb-2">
-                                <div class="card-header">
-                                    <h5 class="card-title mb-0"><a class="card_header stretched-link link-dark"
-                                            href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
-                                    </h5>
-                                </div>
-                                <div class="card-body">
-                                    <div class="card-text">
-                                        @if (strlen($post->content) > 100)
-                                            {!! substr($post->content, 0, 100) . '...' !!}
-                                        @else
-                                            {!! $post->content !!}
-                                        @endif
-                                    </div>
-                                    <div class="card-text mt-3">
-                                        <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
-                                            class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                                        {{ DB::table('users')->where('id', $post->user_id)->value('name') }} -
-                                        {{ date('d.m.Y', strtotime($post->created_at)) }}
-                                    </div>
-                                </div>
-                            </div>
-                        @endforeach
-                    @else
-                        <h5 class="card-title mb-0 text-center alert alert-danger">Uživatel zatím nepřidal žádný příspěvek</h5>
-                    @endif
-                </div>
-            </div>
-            </div>
             </div>
         @endif
     @else
@@ -297,42 +263,33 @@
                 </div>
             </div>
         </div>
-        <div class="card mt-3 shadow-lg">
-            <div class="card-header">
-                <h5 class="card-title text-center">Příspěvky</h5>
-            </div>
-            <div class="card-body">
-                @if ($user->posts()->count() > 0)
-                    @foreach ($user->posts()->orderBy('created_at', 'desc')->get() as $post)
-                        <div class="card mb-2">
-                            <div class="card-header">
-                                <h5 class="card-title mb-0"><a class="card_header stretched-link link-dark"
-                                        href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
-                                </h5>
-                            </div>
-                            <div class="card-body">
-                                <div class="card-text">
-                                    @if (strlen($post->content) > 100)
-                                        {!! substr($post->content, 0, 100) . '...' !!}
-                                    @else
-                                        {!! $post->content !!}
-                                    @endif
-                                </div>
-                                <div class="card-text mt-3">
-                                    <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
-                                        class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                                    {{ DB::table('users')->where('id', $post->user_id)->value('name') }} -
-                                    {{ date('d.m.Y', strtotime($post->created_at)) }}
-                                </div>
-                            </div>
+        @if ($posts->count() == 0)
+            <h5 class="card-title mb-0 text-center alert alert-secondary">Žádné příspěvky</h5>
+        @else
+            @foreach ($posts as $post)
+                <div class="card mb-2 shadow-lg">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0 text-center"><a class="card_header stretched-link link-dark"
+                                href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <div class="card-text">
+                            @if (strlen($post->content) > 100)
+                                {!! substr($post->content, 0, 100) . '...' !!}
+                            @else
+                                {!! $post->content !!}
+                            @endif
                         </div>
-                    @endforeach
-                @else
-                    <h5 class="card-title mb-0 text-center alert alert-danger">Uživatel zatím nepřidal žádný příspěvek</h5>
-                @endif
-            </div>
-        </div>
-        </div>
-        </div>
+                        <div class="card-text mt-3">
+                            <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
+                                class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
+                            {{ DB::table('users')->where('id', $post->user_id)->value('name') }} -
+                            {{ date('d.m.Y', strtotime($post->created_at)) }}
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        @endif
     @endauth
 </x-layout>

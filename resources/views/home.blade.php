@@ -1,1 +1,3 @@
-<x-posts :posts="$posts" />
+<x-layout>
+
+</x-layout>

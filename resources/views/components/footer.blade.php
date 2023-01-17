@@ -1,7 +1,7 @@
-<footer class="shadow-lg">
-    <div class="d-flex justify-content-between py-3 bg-white fixed-bottom rounded mb-2 mx-2">
+<footer id="footer">
+    <div class="d-flex justify-content-between py-3 bg-white fixed-bottom rounded mb-2 mx-2 shadow-lg">
         <div class="align-items-center ms-4">
-            <span class="mb-3 mb-md-0 text-muted">&copy; 2022 Filip Vaněk</span>
+            <span class="mb-3 mb-md-0 text-muted">&copy; {{ date('Y') }} Filip Vaněk</span>
         </div>
         <ul class="nav justify-content-end list-unstyled">
             <li class="ms-3">
@@ -18,19 +18,11 @@
 </footer>
 <script>
     window.addEventListener("scroll", function() {
-        if (
-            window.scrollY + 20 >=
-            document.body.offsetHeight - window.innerHeight
-        ) {
-            document.querySelector("#footer").style.opacity = "0";
-            setTimeout(() => {
-                document.querySelector("#footer").style.display = "none";
-            }, 500);
-        } else {
-            document.querySelector("#footer").style.opacity = "1";
-            setTimeout(() => {
-                document.querySelector("#footer").style.display = "block";
-            }, 500);
+        if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+            $("#footer").fadeOut("fast");
+        }
+        if ($(window).scrollTop() + $(window).height() < $(document).height()) {
+            $("#footer").fadeIn("fast");
         }
     });
 

@@ -1,12 +1,82 @@
 <x-layout>
-    <a href="{{ route('subforums') }}" class="btn btn-light mb-2 shadow-lg"><i class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
+    <a href="{{ route('subforums') }}" class="btn btn-light mb-2 shadow-lg"><i
+            class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
     <div class="card mb-2 shadow-lg">
         <div class="card-header">
-            <h5 class="card-title mb-0 text-center">{{ $subforum->name }}</h5>
+            <h5 class="card-title post_card mb-1 ms-5">
+                {{ $subforum->name }}
+                @auth
+                    <form id="like-form" action="{{ route('subforum/like') }}" method="POST" class="float-end">
+                        @csrf
+                        <input type="hidden" name="subforum_id" value="{{ $subforum->id }}">
+                        <button type="submit" class="btn btn-light btn-sm mb-1" id="like-button">
+                            @if (DB::table('subforum_likes')->where('subforum_id', $subforum->id)->where('user_id', Auth::user()->id)->exists())
+                                <i class="fa-solid fa-heart me-1 text-danger" id="heart"></i>
+                            @else
+                                <i class="fa-solid fa-heart me-1" id="heart"></i>
+                            @endif
+                            <b id="like-count">{{ $subforum->likes()->count() }}</b>
+                        </button>
+                    </form>
+
+                    <script>
+                        $('#like-form').on('submit', function(event) {
+                            event.preventDefault();
+
+                            $.ajax({
+                                url: $(this).attr('action'),
+                                method: $(this).attr('method'),
+                                data: $(this).serialize(),
+                                success: function(response) {
+                                    if (response.success && response.message == 'Like added') {
+                                        $('#heart').addClass('text-danger');
+                                        var likeCount = parseInt($('#like-count').text()) + 1;
+                                        $('#like-count').text(likeCount);
+                                    } else if (response.success && response.message == 'Like removed') {
+                                        $('#heart').removeClass('text-danger');
+                                        var likeCount = parseInt($('#like-count').text()) - 1;
+                                        $('#like-count').text(likeCount);
+                                    }
+                                }
+                            });
+                        });
+                    </script>
+                @else
+                    <button type="button" class="btn btn-light btn-sm float-end mb-1" data-bs-toggle="modal"
+                        data-bs-target="#notLoggedInLikeModal">
+                        <i class="fa-solid fa-heart me-1"></i>
+                        <b>{{ DB::table('subforum_likes')->where('subforum_id', $subforum->id)->count() }}</b>
+                    </button>
+                @endauth
+            </h5>
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="modal fade text-dark" id="notLoggedInLikeModal" tabindex="-1"
+                        aria-labelledby="notLoggedInLikeModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="notLoggedInLikeModal">Přidat do oblíbených</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body text-center">
+                                    Pro přidání subfora do oblíbených se musíte přihlásit.
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary"
+                                        data-bs-dismiss="modal">Zavřít</button>
+                                    <a href="{{ route('login') }}" class="btn btn-primary">Přihlásit se</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         </div>
         <div class="card-body">
-            <img src="{{ asset('storage/' . $subforum->image) }}" class="img rounded-circle mx-auto d-block" width="100px"
-                height="100px" alt="Profile Picture">
+            <img src="{{ asset('storage/' . $subforum->image) }}" class="img rounded-circle mx-auto d-block"
+                width="100px" height="100px" alt="Profile Picture">
             <p class="card-text text-center mt-1">{{ $subforum->description }}<br>
                 {{ $subforum->posts->count() }}
                 @if ($subforum->posts->count() == 1)
@@ -24,8 +94,8 @@
                     {{ DB::table('users')->where('id', $subforum->user_id)->value('name') }}</a>
                 @auth
                 <div class="mb-2">
-                    <button class="btn btn-success" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample"
-                        aria-expanded="false" aria-controls="collapseExample">
+                    <button class="btn btn-success" type="button" data-bs-toggle="collapse"
+                        data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                         <i class="fa-solid fa-plus me-1"></i>Přidat příspěvek</button>
                     @if ($subforum->user_id == Auth::id() || Auth::user()->is_admin == 1)
                         <button type="button" class="btn btn-primary" data-bs-toggle="modal"
@@ -58,7 +128,8 @@
                                             </div>
                                             <div class="mb-3">
                                                 <label for="image" class="form-label">Obrázek</label>
-                                                <input class="form-control" type="file" id="image" name="image">
+                                                <input class="form-control" type="file" id="image"
+                                                    name="image">
                                             </div>
                                             <input type="submit" class="btn btn-primary" value="Aktualizovat">
                                         </form>
