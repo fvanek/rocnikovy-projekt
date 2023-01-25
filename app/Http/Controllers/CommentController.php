@@ -11,7 +11,7 @@ class CommentController extends Controller
     function CreateComment(Request $request)
     {
         $request->validate([
-            'content' => 'required',
+            'content' => 'required|string',
         ]);
 
         $comment = new Comment();

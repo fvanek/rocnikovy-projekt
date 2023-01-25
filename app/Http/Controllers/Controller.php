@@ -16,7 +16,6 @@ class Controller extends BaseController
 
     function home()
     {
-        //if the user is logged in, show only the posts from subforums the user has liked
         if (Auth::check()) {
             $likes = SubforumLike::where('user_id', Auth::id())->get();
             if ($likes->isEmpty()) {

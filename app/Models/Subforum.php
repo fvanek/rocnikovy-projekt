@@ -5,12 +5,13 @@ namespace App\Models;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
 class Subforum extends Model
 {
-    use HasFactory;
+    use HasFactory, HasUlids;
 
     protected $fillable = [
         'name',

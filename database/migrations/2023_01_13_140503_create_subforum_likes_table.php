@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('subforum_likes', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('subforum_id')->constrained();
-            $table->foreignId('user_id')->constrained();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('subforum_id')->constrained();
+            $table->foreignUuid('user_id')->constrained();
             $table->timestamps();
         });
     }

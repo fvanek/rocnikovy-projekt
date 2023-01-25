@@ -17,15 +17,16 @@
     </div>
 </footer>
 <script>
-    window.addEventListener("scroll", function() {
-        if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-            $("#footer").fadeOut("fast");
-        }
-        if ($(window).scrollTop() + $(window).height() < $(document).height()) {
-            $("#footer").fadeIn("fast");
-        }
-    });
-
+    if ($(window).width() > 991) {
+        window.addEventListener("scroll", function() {
+            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
+                $("#footer").fadeOut("fast");
+            }
+            if ($(window).scrollTop() + $(window).height() < $(document).height()) {
+                $("#footer").fadeIn("fast");
+            }
+        });
+    }
     document.querySelectorAll("#footericons").forEach((item) => {
         item.addEventListener("mouseover", (event) => {
             item.classList.remove("text-muted");

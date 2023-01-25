@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Comment;
 use App\Models\PostLike;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -17,12 +18,19 @@ class PostController extends Controller
     {
         $request->validate([
             'title' => 'required|max:255',
-            'content' => 'required',
+            'content' => 'required|string',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $post = new Post();
         $post->title = $request->title;
         $post->content = $request->content;
+        if ($request->hasFile('image')) {
+            Storage::putFileAs('public/post_images', $request->file('image'), $request->file('image')->getClientOriginalName());
+            $post->image = 'post_images/' . $request->file('image')->getClientOriginalName();
+        } else {
+            $post->image = null;
+        }
         $post->user_id = Auth::id();
         $post->subforum_id = $request->subforum_id;
         $post->save();
@@ -52,10 +60,8 @@ class PostController extends Controller
     {
         if (!Auth::check())
             return redirect()->route('login');
-        $posts = PostLike::join('posts', 'likes.post_id', '=', 'posts.id')
-            ->where('likes.user_id', Auth::id())
-            ->orderBy('likes.created_at', 'desc')
-            ->get();
+        $likes = PostLike::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
+        $posts = Post::whereIn('id', $likes->pluck('post_id'))->get();
         return view('components.posts', [
             'posts' => $posts,
         ]);

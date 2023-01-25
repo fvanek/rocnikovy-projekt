@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use Reflector;
-use App\Model\Post;
+use App\Models\Post;
+use App\Models\Comment;
+use App\Models\PostLike;
 use App\Models\Subforum;
 use Termwind\Components\Dd;
 use App\Models\SubforumLike;
@@ -12,6 +14,7 @@ use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Database\Eloquent\Collection;
 
 class SubforumController extends Controller
 {
@@ -27,14 +30,14 @@ class SubforumController extends Controller
         $subforum = Subforum::find($id);
         return view('subforum', [
             'subforum' => $subforum,
-            'posts' => DB::table('posts')->where('subforum_id', $id)->orderBy('created_at', 'desc')->get(),
+            'posts' => Post::where('subforum_id', $id)->orderBy('created_at', 'desc')->get(),
         ]);
     }
 
     function CreateSubforum(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:subforums|max:255',
+            'name' => 'required|unique:subforums|max:50',
             'description' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
@@ -56,15 +59,16 @@ class SubforumController extends Controller
 
     function DeleteSubforum(Subforum $subforum)
     {
-        $posts = DB::table('posts')->where('subforum_id', $subforum->id)->get();
+        $posts = Post::where('subforum_id', $subforum->id)->get();
         foreach ($posts as $post) {
-            DB::table('comments')->where('post_id', $post->id)->delete();
+            $comments = Comment::where('post_id', $post->id)->get();
+            foreach ($comments as $comment) {
+                $comment->delete();
+            }
+            PostLike::where('post_id', $post->id)->delete();
+            $post->delete();
         }
-        DB::table('posts')->where('subforum_id', $subforum->id)->delete();
-        if ($subforum->image != 'subforum_images/default.png') {
-            Storage::delete('public/' . $subforum->image);
-        }
-
+        SubforumLike::where('subforum_id', $subforum->id)->delete();
         $subforum->delete();
         return redirect()->route('subforums');
     }

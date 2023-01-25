@@ -7,6 +7,7 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\SubforumController;
 
 /*
@@ -28,6 +29,7 @@ Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name
 Route::post('/login', [UserController::class, 'Login'])->name('login');
 Route::post('/register', [UserController::class, 'Register'])->name('register');
 Route::post('/logout', [UserController::class, 'Logout'])->name('logout');
+Route::get('/admin/dashboard', [UserController::class, 'RedirectToAdminDashboard'])->name('admin/dashboard');
 
 Route::group(['prefix' => 'profile'], function () {
     Route::get('/{id}', [UserController::class, 'RedirectToProfilePage'])->name('profile');
@@ -67,3 +69,6 @@ Route::group(['prefix' => 'comment'], function () {
 
 //Search
 Route::get('/search', [SearchController::class, 'Search'])->name('search');
+
+//Dropzone
+Route::post('/postimage_upload', [DropzoneController::class, 'UploadPostImage'])->name('postimage/upload');

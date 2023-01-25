@@ -14,12 +14,13 @@ return new class extends Migration
     public function up()
     {
         Schema::create('posts', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamps();
             $table->string('title');
             $table->longText('content');
-            $table->foreignId('user_id')->constrained();
-            $table->foreignId('subforum_id')->constrained();
+            $table->string('image')->nullable();
+            $table->foreignUuid('user_id')->constrained();
+            $table->foreignUuid('subforum_id')->constrained();
         });
     }
 

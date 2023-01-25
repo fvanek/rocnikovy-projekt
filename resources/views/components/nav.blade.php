@@ -33,7 +33,7 @@
                                 style="width: 30px; height: 30px;">
                             {{ Auth::user()->name }}
                             @if (Auth::user()->is_admin == 1)
-                                <span class="badge bg-danger ms-1">(admin)</span>
+                                <span class="badge bg-danger ms-1">admin</span>
                             @endif
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
@@ -54,6 +54,13 @@
                             <li>
                                 <hr class="dropdown-divider">
                             </li>
+                            @if (Auth::user()->is_admin == 1)
+                                <li>
+                                    <a href="{{ route('admin/dashboard') }}" class="dropdown-item">
+                                        <i class="fa-solid fa-bolt me-1"></i>Admin dashboard
+                                    </a>
+                                </li>
+                            @endif
                             <li>
                                 <form action="{{ route('logout') }}" method="POST">
                                     @csrf

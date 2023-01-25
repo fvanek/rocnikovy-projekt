@@ -20,6 +20,7 @@
                                     {!! $post->content !!}
                                 @endif
                             </div>
+                            <hr class="divider">
                             <div class="card-text mt-3">
                                 <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
                                     class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">

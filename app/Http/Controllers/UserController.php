@@ -6,7 +6,9 @@ use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
+use App\Models\PostLike;
 use App\Models\Subforum;
+use App\Models\SubforumLike;
 use Termwind\Components\Dd;
 use Termwind\Components\Li;
 use Illuminate\Http\Request;
@@ -81,17 +83,24 @@ class UserController extends Controller
 
         $request->session()->regenerateToken();
 
-        return redirect()->route('home');
+        return redirect()->intended();
     }
 
     function RedirectToProfilePage($id)
     {
-        $user = User::find($id);
-        $posts = Post::where('user_id', $id);
-        return view('profile', [
-            'user' => $user,
-            'posts' => $posts,
-        ]);
+        if(Auth::user()->id == $id)
+            return view('myprofile', [
+                'user' => User::find($id),
+                'posts' => Post::where('user_id', $id)->orderBy('created_at', 'desc')->get()]);
+        if (Auth::user()->id != $id && Auth::user()->is_admin == 0)
+            return view('profile', [
+                'user' => User::find($id),
+                'posts' => Post::where('user_id', $id)->orderBy('created_at', 'desc')->get()]);
+        if(Auth::user()->id != $id && Auth::user()->is_admin == 1)
+            return view('adminprofile', [
+                'user' => User::find($id),
+                'posts' => Post::where('user_id', $id)->orderBy('created_at', 'desc')->get()]);
+
     }
 
     function UpdateProfile(Request $request)
@@ -167,7 +176,8 @@ class UserController extends Controller
         Post::where('user_id', $request->id)->delete();
         Subforum::where('user_id', $request->id)->delete();
         Comment::where('user_id', $request->id)->delete();
-        Like::where('user_id', $request->id)->delete();
+        PostLike::where('user_id', $request->id)->delete();
+        SubforumLike::where('user_id', $request->id)->delete();
 
         $user->delete();
 
@@ -181,6 +191,19 @@ class UserController extends Controller
 
         sleep(1);
 
-        return redirect()->back();
+        return redirect()->intended();
+    }
+
+    function RedirectToAdminDashboard()
+    {
+        $posts = Post::all();
+        $subforums = Subforum::all();
+        $users = User::all();
+
+        return view('dashboard', [
+            'posts' => $posts,
+            'subforums' => $subforums,
+            'users' => $users
+        ]);
     }
 }

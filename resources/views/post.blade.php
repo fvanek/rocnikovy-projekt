@@ -1,7 +1,6 @@
 <x-layout>
     <div class="mb-2">
-        <a href="{{ route('subforum', ['id' => $post->subforum->id]) }}" class="btn btn-light"><i
-                class="fa-solid fa-arrow-left me-1 shadow-lg"></i>Zpět na subforum</a>
+        <x-backbutton />
         @auth
             @if (Auth::user()->id == $post->user_id || Auth::user()->is_admin == 1 || Auth::user()->id == $post->subforum->user_id)
                 <button class="btn btn-danger" type="button" data-bs-toggle="modal" data-bs-target="#deletePostModal">
@@ -36,13 +35,7 @@
     <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title post_card mb-1">
-                <div class="float-start">
-                    <img src="{{ asset('storage/' .DB::table('subforums')->where('id', $post->subforum_id)->value('image')) }}"
-                        class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                    <a href="{{ route('subforum', $post->subforum_id) }}" class="text-dark">
-                        {{ DB::table('subforums')->where('id', $post->subforum_id)->value('name') }}
-                    </a>
-                </div>
+
                 {{ $post->title }}
                 @auth
                     <form id="like-form" action="{{ route('post/like') }}" method="POST" class="float-end">
@@ -115,6 +108,14 @@
         </div>
         <div class="card-body">
             <div class="card-text">
+                <h5>
+                    <img src="{{ asset('storage/' .DB::table('subforums')->where('id', $post->subforum_id)->value('image')) }}"
+                        class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
+                    <a href="{{ route('subforum', $post->subforum_id) }}" class="text-dark">
+                        {{ DB::table('subforums')->where('id', $post->subforum_id)->value('name') }}
+                    </a>
+                </h5>
+                <hr class="divider">
                 <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
                     class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
                 <a href="{{ route('profile', $post->user_id) }}" class="text-dark">
@@ -122,8 +123,10 @@
                 </a>
             </div>
             <div class="card-text">{{ date('d.m.Y', strtotime($post->created_at)) }}</div>
-            <hr class="divider">
             <div class="card-text mb-1 mt-3">{!! $post->content !!}</div>
+            @if ($post->image)
+                <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid" alt="Post Image">
+            @endif
         </div>
         <div class="card-footer">
             <div class="row">

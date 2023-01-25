@@ -37,6 +37,16 @@
                     </div>
                 </div>
             </div>
+                <div class="row mt-3">
+                    <div class="col-md-12">
+                        <div class="text-center">
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal"
+                                    data-bs-target="#deleteModal">
+                                <i class="fa-solid fa-trash me-2"></i>Smazat účet
+                            </button>
+                        </div>
+                    </div>
+                </div>
         </div>
     </div>
     @if ($posts->count() == 0)
@@ -67,4 +77,30 @@
             </div>
         @endforeach
     @endif
+    <div class="modal fade text-dark" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="deleteModalLabel"><i
+                            class="fa-solid fa-trash me-2"></i>Smazat účet</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                            aria-label="Close"></button>
+                </div>
+                <div class="modal-body text-center">
+                    Opravdu chcete smazat účet?
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary"
+                            data-bs-dismiss="modal">Zavřít</button>
+                    <form action="/profile/delete" method="POST">
+                        @csrf
+                        <input type="hidden" name="id" value="{{ $user->id }}">
+                        <button type="submit" class="btn btn-danger">Smazat</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 </x-layout>
+

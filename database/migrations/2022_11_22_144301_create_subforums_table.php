@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('subforums', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->timestamps();
             $table->string('name');
             $table->string('description');
-            $table->foreignId('user_id')->constrained();
+            $table->foreignUuid('user_id')->constrained();
             $table->string('image')->nullable();
         });
     }

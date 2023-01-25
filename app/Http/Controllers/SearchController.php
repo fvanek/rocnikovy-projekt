@@ -11,6 +11,8 @@ class SearchController extends Controller
 {
     public function Search(Request $request)
     {
+        if ($request->input('search') == null)
+            return back()->withErrors(['search' => 'Pole vyhledávání nesmí být prázdné']);
         $request->validate([
             'search' => 'required|string'
         ]);

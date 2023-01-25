@@ -15,6 +15,7 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
+    <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 
     <!-- Icons -->
     <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
@@ -27,13 +28,11 @@
             selector: 'textarea.tinymce',
             language: 'cs',
             plugins: [
-                'advlist', 'autolink', 'lists', 'link', 'charmap', 'preview', 'anchor', 'searchreplace',
-                'fullscreen', 'insertdatetime', 'table', 'help', 'wordcount'
+                'help', 'wordcount'
             ],
-            toolbar: 'bold italic underline | font fontsize fontcolor | h1 h2 h3 | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | removeformat | help',
+            toolbar: 'bold italic underline | help',
         });
     </script>
-
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
@@ -42,13 +41,15 @@
 <body class="antialiased bg-secondary">
     <x-nav />
     <div class="container mt-4">
+        @error('search')
+            <div class="alert alert-danger">{{ $message }}</div>
+        @enderror
         {{ $slot }}
     </div>
     <x-footer />
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="https://cdn.jsdeliver.net/gh/livewire/turbolinks@v0.1.x/dist/livewire-turbolinks.js"
-        data-turbolinks-eval="false"></script>
+    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
 </body>
 
 </html>
