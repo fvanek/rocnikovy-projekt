@@ -30,26 +30,33 @@
             plugins: [
                 'help', 'wordcount'
             ],
+            content_style: 'img {max-width: 80vw}',
             toolbar: 'bold italic underline | help',
         });
     </script>
     <!-- Jquery -->
     <script src="https://code.jquery.com/jquery-3.6.1.min.js"
         integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
+    @livewireStyles
 </head>
 
 <body class="antialiased bg-secondary">
     <x-nav />
     <div class="container mt-4">
-        @error('search')
-            <div class="alert alert-danger">{{ $message }}</div>
-        @enderror
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                @foreach($errors->all() as $error)
+                    <p>{{ $error }}</p>
+                @endforeach
+            </div>
+        @endif
         {{ $slot }}
     </div>
     <x-footer />
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
     <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+@livewireScripts
 </body>
 
 </html>

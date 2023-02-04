@@ -12,7 +12,8 @@ class Posts extends Component
      * @return void
      */
     public $posts;
-    public function __construct()
+
+    public function __construct($posts)
     {
         $this->posts = $posts;
     }

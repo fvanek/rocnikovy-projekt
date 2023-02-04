@@ -1,1 +1,4 @@
-<x-posts :posts="$posts" />
+<x-layout>
+    <livewire:homepageposts />
+</x-layout>
+

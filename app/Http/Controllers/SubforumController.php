@@ -37,7 +37,7 @@ class SubforumController extends Controller
     function CreateSubforum(Request $request)
     {
         $request->validate([
-            'name' => 'required|unique:subforums|max:50',
+            'name' => 'required|max:50',
             'description' => 'required',
             'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);

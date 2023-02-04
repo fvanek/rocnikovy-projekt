@@ -6,6 +6,7 @@ use App\Models\Like;
 use App\Models\Post;
 use App\Models\Comment;
 use App\Models\PostLike;
+use App\Models\SubforumLike;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
@@ -94,4 +95,5 @@ class PostController extends Controller
             return response()->json(['success' => true, 'message' => 'Like removed']);
         }
     }
+
 }

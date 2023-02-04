@@ -16,24 +16,6 @@ class Controller extends BaseController
 
     function home()
     {
-        if (Auth::check()) {
-            $likes = SubforumLike::where('user_id', Auth::id())->get();
-            if ($likes->isEmpty()) {
-                return view('components.posts', [
-                    'posts' => Post::orderBy('created_at', 'desc')->get(),
-                ]);
-            } else {
-                $subforums = [];
-                foreach ($likes as $like) {
-                    array_push($subforums, $like->subforum_id);
-                }
-                return view('components.posts', [
-                    'posts' => Post::whereIn('subforum_id', $subforums)->orderBy('created_at', 'desc')->get(),
-                ]);
-            }
-        }
-        return view('components.posts', [
-            'posts' => Post::orderBy('created_at', 'desc')->get(),
-        ]);
+        return view('home');
     }
 }

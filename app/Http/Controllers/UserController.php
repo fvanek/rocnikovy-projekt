@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\NewUserRegistered;
 use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
@@ -47,6 +48,7 @@ class UserController extends Controller
             'google_id' => null,
         ]);
 
+        event(new NewUserRegistered($user));
         Auth::login($user);
 
         return redirect()->route('home');
@@ -88,19 +90,31 @@ class UserController extends Controller
 
     function RedirectToProfilePage($id)
     {
-        if(Auth::user()->id == $id)
-            return view('myprofile', [
-                'user' => User::find($id),
-                'posts' => Post::where('user_id', $id)->orderBy('created_at', 'desc')->get()]);
-        if (Auth::user()->id != $id && Auth::user()->is_admin == 0)
-            return view('profile', [
-                'user' => User::find($id),
-                'posts' => Post::where('user_id', $id)->orderBy('created_at', 'desc')->get()]);
-        if(Auth::user()->id != $id && Auth::user()->is_admin == 1)
-            return view('adminprofile', [
-                'user' => User::find($id),
-                'posts' => Post::where('user_id', $id)->orderBy('created_at', 'desc')->get()]);
-
+        $posts = Post::where('user_id', $id)->orderBy('created_at', 'desc')->get();
+        foreach ($posts as $post) {
+            $post->content = substr($post->content, 0, 100);
+        }
+        if(Auth::check()){
+            if(Auth::user()->id == $id)
+                return view('myprofile', [
+                    'user' => User::find($id),
+                    'posts' => $posts,
+                    ]);
+            if (Auth::user()->id != $id && Auth::user()->is_admin == 0)
+                return view('profile', [
+                    'user' => User::find($id),
+                    'posts' => $posts
+                ]);
+            if(Auth::user()->id != $id && Auth::user()->is_admin == 1)
+                return view('adminprofile', [
+                    'user' => User::find($id),
+                    'posts' => $posts
+                ]);
+        }
+        return view('profile', [
+            'user' => User::find($id),
+            'posts' => $posts,
+        ]);
     }
 
     function UpdateProfile(Request $request)

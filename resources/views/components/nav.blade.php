@@ -15,22 +15,17 @@
                             class="fa-solid fa-comments me-1"></i>Subfora</a>
                 </li>
             </ul>
+            <div class="col-12 col-lg-7 mx-lg-auto">
+                <livewire:searchbar />
+            </div>
             <ul class="navbar-nav d-flex ms-auto">
-                <li class="nav-item me-4 my-auto">
-                    <form action="{{ route('search') }}" method="GET" class="d-flex">
-                        <input class="form-control me-2" type="search" placeholder="Hledat" aria-label="Search"
-                            name="search">
-                        <button class="btn btn-outline-success" type="submit"><i
-                                class="fa-solid fa-search"></i></button>
-                    </form>
-                </li>
                 <hr class="divider">
                 @auth
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="rounded-circle me-1"
-                                style="width: 30px; height: 30px;">
+                                style="width: 30px; height: 30px;" alt="Avatar">
                             {{ Auth::user()->name }}
                             @if (Auth::user()->is_admin == 1)
                                 <span class="badge bg-danger ms-1">admin</span>
@@ -41,7 +36,6 @@
                                 <a class="dropdown-item" href="/profile/{{ Auth::user()->id }}"><i
                                         class="fa-solid fa-user me-1"></i>Můj
                                     profil</a>
-                                </a>
                             </li>
                             <li><a href="{{ route('posts/mine') }}" class="dropdown-item"><i
                                         class="fa-solid fa-user-pen me-1"></i>Moje

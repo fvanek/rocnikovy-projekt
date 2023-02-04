@@ -2,12 +2,9 @@
 
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\UserController;
-use App\Http\Controllers\SearchController;
 use App\Http\Controllers\CommentController;
-use App\Http\Controllers\DropzoneController;
 use App\Http\Controllers\SubforumController;
 
 /*
@@ -66,9 +63,3 @@ Route::group(['prefix' => 'comment'], function () {
     Route::post('/create', [CommentController::class, 'CreateComment'])->name('comment/create');
     Route::delete('/{comment}', [CommentController::class, 'DeleteComment'])->name('comment/delete');
 });
-
-//Search
-Route::get('/search', [SearchController::class, 'Search'])->name('search');
-
-//Dropzone
-Route::post('/postimage_upload', [DropzoneController::class, 'UploadPostImage'])->name('postimage/upload');

@@ -45,7 +45,7 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="description" class="form-label">Popis</label>
-                                        <textarea class="form-control" id="description" name="description" rows="3"></textarea>
+                                        <textarea class="form-control" id="description" name="description" rows="3" placeholder="Povinné pole"></textarea>
                                     </div>
                                     <div class="mb-3">
                                         <label for="image" class="form-label">Obrázek</label>
@@ -59,15 +59,7 @@
                 </div>
             </div>
         </div>
-        @if ($errors->any())
-            <div class="alert alert-danger">
-                <ul>
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            </div>
-        @endif
+
     @endauth
     @if ($subforums->count() == 0)
         <div class="card mb-2 shadow-lg">
