@@ -6,6 +6,13 @@
             <div class="card mb-3">
                 <div class="card-body">
                     <h5 class="card-title mb-3">{{ $post->title }}</h5>
+                    <h6>
+                        <img src="{{ asset('storage/' .DB::table('subforums')->where('id', $post->subforum_id)->value('image')) }}"
+                             class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
+                        <a href="{{ route('subforum', $post->subforum_id) }}" class="text-dark">
+                            {{ DB::table('subforums')->where('id', $post->subforum_id)->value('name') }}
+                        </a>
+                    </h6>
                     <p class="card-text">{!! $post->content !!}</p>
                     @if($post->image != null)
                         <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid" alt="Post Image">

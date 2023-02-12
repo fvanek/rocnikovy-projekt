@@ -74,7 +74,7 @@
         </div>
         <div class="card-body">
             <img src="{{ asset('storage/' . $subforum->image) }}" class="img rounded-circle mx-auto d-block"
-                width="100px" height="100px" alt="Profile Picture">
+                width="100px" height="115px" alt="Profile Picture">
             <p class="card-text text-center mt-1">{{ $subforum->description }}<br>
                 {{ $subforum->posts->count() }}
                 @if ($subforum->posts->count() == 1)
@@ -192,4 +192,5 @@
         </div>
     </div>
     <x-posts :posts="$posts"/>
+    <x-footer />
 </x-layout>

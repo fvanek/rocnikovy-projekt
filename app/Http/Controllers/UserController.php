@@ -3,7 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Events\NewUserRegistered;
-use App\Models\Like;
 use App\Models\Post;
 use App\Models\User;
 use App\Models\Comment;
@@ -48,7 +47,8 @@ class UserController extends Controller
             'google_id' => null,
         ]);
 
-        event(new NewUserRegistered($user));
+        //event(new NewUserRegistered($user));
+
         Auth::login($user);
 
         return redirect()->route('home');
@@ -210,14 +210,6 @@ class UserController extends Controller
 
     function RedirectToAdminDashboard()
     {
-        $posts = Post::all();
-        $subforums = Subforum::all();
-        $users = User::all();
-
-        return view('dashboard', [
-            'posts' => $posts,
-            'subforums' => $subforums,
-            'users' => $users
-        ]);
+        return view ('dashboard');
     }
 }

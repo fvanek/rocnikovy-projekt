@@ -63,3 +63,6 @@ Route::group(['prefix' => 'comment'], function () {
     Route::post('/create', [CommentController::class, 'CreateComment'])->name('comment/create');
     Route::delete('/{comment}', [CommentController::class, 'DeleteComment'])->name('comment/delete');
 });
+
+//Search
+Route::get('/search', [Controller::class, 'Search'])->name('search');
