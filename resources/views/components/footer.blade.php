@@ -1,7 +1,9 @@
 <footer id="footer">
     <div class="d-flex justify-content-between py-3 bg-white fixed-bottom rounded mb-2 mx-2 shadow-lg">
         <div class="align-items-center ms-4">
-            <span class="mb-3 mb-md-0 text-muted">&copy; {{ date('Y') }} Filip Vaněk</span>
+            <span class="mb-3 mb-md-0 text-muted">&copy; {{ date('Y') }} Filip Vaněk |
+                <a class="text-muted text-decoration-none" href="{{ route('about') }}">O webu</a>
+            </span>
         </div>
         <ul class="nav justify-content-end list-unstyled">
             <li class="ms-3">
@@ -18,21 +20,21 @@
 </footer>
 <script>
     if ($(window).width() > 991) {
-        window.addEventListener("scroll", function() {
-            if ($(window).scrollTop() + $(window).height() == $(document).height()) {
-                $("#footer").fadeOut("fast");
+        $(window).scroll(function() {
+            if ($(window).scrollTop() + $(window).height() > $(document).height() - 100) {
+                $("#footer").fadeOut();
+            } else {
+                $("#footer").fadeIn();
             }
-            if ($(window).scrollTop() + $(window).height() < $(document).height()) {
-                $("#footer").fadeIn("fast");
-            }
+        });
+
+        document.querySelectorAll("#footericons").forEach((item) => {
+            item.addEventListener("mouseover", (event) => {
+                item.classList.remove("text-muted");
+            });
+            item.addEventListener("mouseleave", (event) => {
+                item.classList.add("text-muted");
+            });
         });
     }
-    document.querySelectorAll("#footericons").forEach((item) => {
-        item.addEventListener("mouseover", (event) => {
-            item.classList.remove("text-muted");
-        });
-        item.addEventListener("mouseleave", (event) => {
-            item.classList.add("text-muted");
-        });
-    });
 </script>

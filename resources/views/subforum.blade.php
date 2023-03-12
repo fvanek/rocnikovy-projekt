@@ -1,6 +1,9 @@
 <x-layout>
+    <x-slot name="title">
+        {{ $subforum->name }}
+    </x-slot>
     <x-backbutton class="mb-2" />
-    <div class="card mb-2 shadow-lg">
+    <div class="card mb-3 shadow-lg">
         <div class="card-header">
             <h5 class="card-title post_card mb-1 ms-5">
                 {{ $subforum->name }}
@@ -9,7 +12,7 @@
                         @csrf
                         <input type="hidden" name="subforum_id" value="{{ $subforum->id }}">
                         <button type="submit" class="btn btn-light btn-sm mb-1" id="like-button">
-                            @if (DB::table('subforum_likes')->where('subforum_id', $subforum->id)->where('user_id', Auth::user()->id)->exists())
+                            @if ($subforum->likes()->where('subforum_id', $subforum->id)->where('user_id', Auth::user()->id)->exists())
                                 <i class="fa-solid fa-heart me-1 text-danger" id="heart"></i>
                             @else
                                 <i class="fa-solid fa-heart me-1" id="heart"></i>
@@ -43,7 +46,7 @@
                     <button type="button" class="btn btn-light btn-sm float-end mb-1" data-bs-toggle="modal"
                         data-bs-target="#notLoggedInLikeModal">
                         <i class="fa-solid fa-heart me-1"></i>
-                        <b>{{ DB::table('subforum_likes')->where('subforum_id', $subforum->id)->count() }}</b>
+                        <b>{{ $subforum->likes()->count() }}</b>
                     </button>
                 @endauth
             </h5>
@@ -85,11 +88,7 @@
                     příspěvků
                 @endif
             </p>
-            <p class="card-text text-center mt-1">Založil <a href="{{ route('profile', $subforum->user_id) }}"
-                    class="text-dark" style="text-decoration: none;"><img
-                        src="{{ asset('storage/' .DB::table('users')->where('id', $subforum->user_id)->value('avatar')) }}"
-                        class="img rounded-circle mb-1" width="20px" height="20px" alt="Profile Picture">
-                    {{ DB::table('users')->where('id', $subforum->user_id)->value('name') }}</a>
+            <p class="card-text text-center mt-1">Založil(a) <x-userlink :user="$subforum->user" /></p>
                 @auth
                 <div class="mb-2">
                     <button class="btn btn-success" type="button" data-bs-toggle="collapse"

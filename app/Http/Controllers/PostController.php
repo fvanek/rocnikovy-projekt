@@ -63,7 +63,7 @@ class PostController extends Controller
             return redirect()->route('login');
         $likes = PostLike::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
         $posts = Post::whereIn('id', $likes->pluck('post_id'))->get();
-        return view('components.posts', [
+        return view('favorites', [
             'posts' => $posts,
         ]);
     }
@@ -73,7 +73,7 @@ class PostController extends Controller
         if (!Auth::check())
             return redirect()->route('login');
         $posts = Post::where('user_id', Auth::id())->orderBy('created_at', 'desc')->get();
-        return view('components.posts', [
+        return view('myposts', [
             'posts' => $posts,
         ]);
     }

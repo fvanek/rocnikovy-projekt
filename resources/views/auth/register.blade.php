@@ -1,5 +1,8 @@
 <x-layout>
-    <form action="register" method="POST" enctype="multipart/form-data">
+    <x-slot name="title">
+        Registrace
+    </x-slot>
+    <form action="{{ route('user/store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <section class="vh-100">
             <div class="container">
@@ -15,36 +18,24 @@
                                         <input type="text" id="name" name="name"
                                             class="form-control form-control-lg" value="{{ old('name') }}" />
                                         <label class="form-label" for="name">Uživatelské jméno</label>
-                                        @error('name')
-                                            <p class="text-danger">{{ $messsage }}</p>
-                                        @enderror
                                     </div>
 
                                     <div class="form-outline form-dark mb-4">
                                         <input type="email" id="email" name="email"
                                             class="form-control form-control-lg" value="{{ old('email') }}" />
                                         <label class="form-label" for="email">Email</label>
-                                        @error('email')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
                                     </div>
 
                                     <div class="form-outline form-dark mb-4">
                                         <input type="password" id="password" name="password"
                                             class="form-control form-control-lg" />
                                         <label class="form-label" for="password">Heslo</label>
-                                        @error('password')
-                                            <p class="text-danger ">{{ $message }}</p>
-                                        @enderror
                                     </div>
 
                                     <div class="form-outline form-dark mb-4">
                                         <input type="password" id="password_confirmation" name="password_confirmation"
                                             class="form-control form-control-lg" />
                                         <label class="form-label" for="password_confirmation">Heslo znovu</label>
-                                        @error('password_confirmation')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
                                     </div>
                                     <button class="btn btn-outline-dark btn-lg px-5" type="submit">Zaregistrovat
                                         se</button>
@@ -56,7 +47,7 @@
                                         Zaregistrovat přes Google
                                     </a>
                                     <p class="small mt-3"><a class="text-50 text-dark"
-                                            href="{{ url()->previous() }}">Zpět</a>
+                                            href="{{ url()->previous() }}"><i class="fa-solid fa-arrow-left me-1"></i>Zpět</a>
                                     </p>
                                 </div>
                             </div>

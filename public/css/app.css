@@ -1,16 +1,15 @@
-@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:wght@300&display=swap");
-
 body {
-    font-family: "Roboto Mono", monospace;
+    background: rgb(156,32,137);
+    background: linear-gradient(90deg, rgba(156,32,137,1) 0%, rgba(78,8,105,1) 52%, rgba(0,212,255,1) 100%);
 }
 
 .alert-fixed {
     position: fixed;
-    top: 0px;
-    left: 0px;
+    top: 0;
+    left: 0;
     width: 100%;
     z-index: 9999;
-    border-radius: 0px;
+    border-radius: 0;
 }
 
 .lds-ellipsis {
@@ -109,12 +108,6 @@ img {
 
     .post_card {
         text-align: center;
-    }
-}
-
-@media (max-width: 767px) {
-    .profile_settings {
-        margin-top: 10px;
     }
 }
 

@@ -19,12 +19,13 @@ use App\Http\Controllers\SubforumController;
 */
 
 Route::get('/', [Controller::class, 'home'])->name('home');
+Route::get('/about', [Controller::class, 'about'])->name('about');
 
 //User
 Route::get('/login', [UserController::class, 'RedirectToLoginPage'])->name('login');
 Route::get('/register', [UserController::class, 'RedirectToRegisterPage'])->name('register');
-Route::post('/login', [UserController::class, 'Login'])->name('login');
-Route::post('/register', [UserController::class, 'Register'])->name('register');
+Route::post('/user/auth', [UserController::class, 'Login'])->name('user/auth');
+Route::post('/user/store', [UserController::class, 'Register'])->name('user/store');
 Route::post('/logout', [UserController::class, 'Logout'])->name('logout');
 Route::get('/admin/dashboard', [UserController::class, 'RedirectToAdminDashboard'])->name('admin/dashboard');
 

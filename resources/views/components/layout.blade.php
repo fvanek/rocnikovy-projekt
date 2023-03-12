@@ -4,8 +4,9 @@
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>{{ config('app.name') }}</title>
-
+    <title>
+        {{ $title ?? config('app.name') }}
+    </title>
     <!-- Favicon -->
     <link rel="icon" href="{{ asset('favicon.ico') }}">
 
@@ -15,10 +16,20 @@
     <!-- Styles -->
     <link href="{{ asset('css/app.css') }}" rel="stylesheet">
     <link href="{{ asset('css/bootstrap.min.css') }}" rel="stylesheet">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css">
 
-    <!-- Icons -->
-    <script src="https://kit.fontawesome.com/f733c57976.js" crossorigin="anonymous"></script>
+    <!-- FontAwesome -->
+    <link href="{{ asset('fontawesome/css/all.css') }}" rel="stylesheet">
+
+    <!-- Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
 
     <!-- TinyMCE -->
     <script src="https://cdn.tiny.cloud/1/atv0zz5w87uf8ihnq71cwdpdyaknsvib3auq25226a3dha1y/tinymce/6/tinymce.min.js"
@@ -31,7 +42,8 @@
                 'help', 'wordcount'
             ],
             content_style: 'img {max-width: 80vw}',
-            toolbar: 'bold italic underline | help',
+            menubar: 'file edit insert view tools help',
+            toolbar: 'bold italic underline',
         });
     </script>
     <!-- Jquery -->
@@ -42,23 +54,52 @@
     @powerGridStyles
 </head>
 
-<body class="antialiased bg-secondary">
-    <x-nav />
-    <div class="container mt-4">
+<body class="antialiased">
+<!--
+                           _
+                          | |
+  ___   ___   __ _  __ _  | |__   ___   ___   __ _  __ _
+ / _ \ / _ \ / _` |/ _` | | '_ \ / _ \ / _ \ / _` |/ _` |
+| (_) | (_) | (_| | (_| | | |_) | (_) | (_) | (_| | (_| |
+ \___/ \___/ \__, |\__,_| |_.__/ \___/ \___/ \__, |\__,_|
+              __/ |                           __/ |
+             |___/                           |___/
+-->
+<x-nav />
+    <div class="container my-4">
         @if ($errors->any())
-            <div class="alert alert-danger">
-                @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
-            </div>
+            @foreach ($errors->all() as $error)
+                <div class="toast bg-danger text-white mx-auto mb-1" role="alert" aria-live="assertive" aria-atomic="true">
+                    <div class="d-flex">
+                        <div class="toast-body">
+                            <i class="fa-solid fa-triangle-exclamation me-2"></i>{{ $error }}
+                        </div>
+                        <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                    </div>
+                </div>
+            @endforeach
         @endif
-        {{ $slot }}
+        <div class="mt-2">
+            {{ $slot }}
+        </div>
     </div>
     <script src="{{ asset('js/bootstrap.bundle.min.js') }}"></script>
     <script src="{{ asset('js/app.js') }}" defer></script>
-    <script src="//cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
-@livewireScripts
-@powerGridScripts
+    <script>
+        $(document).ready(function() {
+            $('.toast').toast('show');
+            $('[data-bs-toggle="popover"]').popover(
+                {
+                    trigger: 'hover',
+                    placement: 'top',
+                    html: true,
+                    sanitize: false
+                }
+            );
+        });
+    </script>
+    @livewireScripts
+    @powerGridScripts
 </body>
 
 </html>

@@ -1,5 +1,9 @@
 <x-layout>
-    <div class="card shadow-lg">
+    <x-slot name="title">
+        {{ $user->name }}
+    </x-slot>
+    <x-backbutton class="mb-2" />
+    <div class="card shadow-lg mb-3">
         <div class="card-header">
             <h3 class="card-title mb-0 text-center">{{ $user->name }}</h3>
         </div>
@@ -20,5 +24,6 @@
             </div>
         </div>
     </div>
+    <x-posts :posts="$posts" />
     <x-footer />
 </x-layout>

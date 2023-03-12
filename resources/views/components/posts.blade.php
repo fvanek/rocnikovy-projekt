@@ -3,25 +3,39 @@
 @else
 @foreach ($posts as $post)
         <a href="{{ route('post', $post->id) }}" wire:key="{{ $post->id }}" class="text-decoration-none text-dark">
-            <div class="card mb-3">
+            <div class="card mb-2">
                 <div class="card-body">
-                    <h5 class="card-title mb-3">{{ $post->title }}</h5>
+                    <h5 class="card-title mb-3">
+                        {{ $post->title }}
+                        <div class="float-end">
+                        @auth
+                            @if ($post->likes()->where('post_id', $post->id)->where('user_id', Auth::user()->id)->exists())
+                                <i class="fa-solid fa-heart me-1 text-danger" id="heart"></i>
+                            @else
+                                <i class="fa-solid fa-heart me-1" id="heart"></i>
+                            @endif
+                            <span id="like-count">{{ $post->likes()->count() }}</span>
+                        @else
+                            <i class="fa-solid fa-heart me-1" id="heart"></i>
+                            <span id="like-count">{{ $post->likes()->count() }}</span>
+                        @endauth
+                        </div>
+                    </h5>
                     <h6>
-                        <img src="{{ asset('storage/' .DB::table('subforums')->where('id', $post->subforum_id)->value('image')) }}"
-                             class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                        <a href="{{ route('subforum', $post->subforum_id) }}" class="text-dark">
-                            {{ DB::table('subforums')->where('id', $post->subforum_id)->value('name') }}
-                        </a>
+                        Subforum: <x-subforumlink :subforum="$post->subforum" />
                     </h6>
-                    <p class="card-text">{!! $post->content !!}</p>
+                    <a class="text-decoration-none text-dark" href="{{ route('post', $post->id) }}">
+                        <p class="card-text">{!! $post->content !!}</p>
+                    </a>
                     @if($post->image != null)
                         <img src="{{ asset('storage/' . $post->image) }}" class="img-fluid" alt="Post Image">
                     @endif
 
                 <hr class="divider">
                 <p class="card-text"><small class="text-muted">Vytvořeno {{ $post->created_at->diffForHumans() }}
-                    uživatelem <a href="{{ route('profile', $post->user->id) }}"
-                    class="text-decoration-none text-dark">{{ $post->user->name }}</a></small></p>
+                    uživatelem <br>
+                        <x-userlink :user="$post->user" />
+                    </small>
                 </div>
             </div>
         </a>

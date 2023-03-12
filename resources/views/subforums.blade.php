@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot name="title">
+        Subfóra
+    </x-slot>
     <button type="button" class="btn btn-success mb-2 shadow-lg" data-bs-toggle="modal"
         @auth data-bs-target="#createSubforumModal" @endauth data-bs-target="#notLoggedInSubforumModal">
         Vytvořit subforum
@@ -59,65 +62,7 @@
                 </div>
             </div>
         </div>
-
     @endauth
-    @if ($subforums->count() == 0)
-        <div class="card mb-2 shadow-lg">
-            <div class="card-header">
-                <h5 class="card-title">Žádné subfora</h5>
-            </div>
-        </div>
-    @else
-        @foreach ($subforums as $subforum)
-            <div class="card mb-2 shadow-lg">
-                <div class="card-header position-relative">
-                    <h5 class="card-title text-center"><a class="card_header stretched-link link-dark"
-                            href="{{ route('subforum', $subforum->id) }}">{{ $subforum->name }}</a></h5>
-                </div>
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="text-center">
-                                <img src="{{ asset('storage/' . $subforum->image) }}"
-                                    class="img rounded-circle mx-auto d-block" width="100px" height="100px"
-                                    alt="Profile Picture">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="text-center">
-                                <h6>{{ $subforum->description }}</h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="text-center">
-                                <h6>{{ $subforum->posts->count() }}
-                                    @if ($subforum->posts->count() == 1)
-                                        příspěvek
-                                    @elseif($subforum->posts->count() >= 2 && $subforum->posts->count() <= 4)
-                                        příspěvky
-                                    @else
-                                        příspěvků
-                                    @endif
-                                </h6>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row mt-1">
-                        <div class="col-md-12">
-                            <div class="text-center">
-                                <h6>Vytvořeno {{ date('d.m.Y', strtotime($subforum->created_at)) }}</h6>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    @endif
-    </div>
-    </div>
-            <x-footer />
+    <livewire:subforumspage />
+    <x-footer />
 </x-layout>

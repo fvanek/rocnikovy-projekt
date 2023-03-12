@@ -121,7 +121,7 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255|unique:users,name,' . Auth::user()->id,
-            'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'avatar' => 'image|mimes:jpeg,png,jpg,gif,svg|max:8192',
             'bio' => 'string|max:500|nullable',
         ]);
 
@@ -197,19 +197,22 @@ class UserController extends Controller
 
         if (Auth::user()->id == $request->id) {
             Auth::logout();
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return redirect()->back();
         }
 
-        $request->session()->invalidate();
-
-        $request->session()->regenerateToken();
-
         sleep(1);
-
-        return redirect()->intended();
+        return redirect()->route('home');
     }
 
     function RedirectToAdminDashboard()
     {
-        return view ('dashboard');
+        if(!Auth::check())
+            return redirect()->route('login');
+        if(Auth::user()->is_admin == 0)
+            return redirect()->route('home');
+        return view('dashboard');
     }
 }

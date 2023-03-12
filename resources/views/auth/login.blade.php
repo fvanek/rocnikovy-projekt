@@ -1,5 +1,8 @@
 <x-layout>
-    <form action="login" method="POST" enctype="multipart/form-data">
+    <x-slot name="title">
+        Přihlášení
+    </x-slot>
+    <form action="{{ route('user/auth') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <section class="vh-100">
             <div class="container">
@@ -19,9 +22,6 @@
                                             @if (Cookie::has('remember_email')) value="{{ Cookie::get('remember_email') }}"
                                             @else value="{{ old('email') }} " /> @endif
                                             <label class="form-label" for="email">Email</label>
-                                        @error('email')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
                                     </div>
 
                                     <div class="form-outline form-dark mb-2">
@@ -30,12 +30,7 @@
                                             @if (Cookie::has('remember_password')) value="{{ Cookie::get('remember_password') }}"
                                             @else value="{{ old('password') }}" @endif />
                                         <label class="form-label mt-1" for="password">Heslo</label>
-                                        @error('password')
-                                            <p class="text-danger">{{ $message }}</p>
-                                        @enderror
                                     </div>
-                                    <p class="small mb-3 pb-lg-2"><a class="text-50" href="#!">Nevíte
-                                            heslo?</a></p>
                                     <div class="form-check d-flex justify-content-center mb-4">
                                         <input class="form-check-input" type="checkbox" id="remember" name="remember"
                                             value="" @if (Cookie::has('remember_email')) checked @endif />

@@ -1,4 +1,7 @@
 <x-layout>
+    <x-slot name="title">
+        {{ $post->title }}
+    </x-slot>
     <div class="mb-2">
         <x-backbutton />
         @auth
@@ -35,7 +38,6 @@
     <div class="card mb-2 shadow-lg">
         <div class="card-header">
             <h5 class="card-title post_card mb-1">
-
                 {{ $post->title }}
                 @auth
                     <form id="like-form" action="{{ route('post/like') }}" method="POST" class="float-end">
@@ -50,7 +52,6 @@
                             <span id="like-count">{{ $post->likes()->count() }}</span>
                         </button>
                     </form>
-
                     <script>
                         $('#like-form').on('submit', function(event) {
                             event.preventDefault();
@@ -75,52 +76,44 @@
                     </script>
                 @else
                     <button type="button" class="btn btn-light btn-sm float-end mb-1" data-bs-toggle="modal"
-                        data-bs-target="#notLoggedInLikeModal">
+                            data-bs-target="#notLoggedInLikeModal">
                         <i class="fa-solid fa-heart me-1"></i>
                         <b>{{ DB::table('post_likes')->where('post_id', $post->id)->count() }}</b>
                     </button>
-                @endauth
-            </h5>
-            <div class="row">
-                <div class="col-md-12">
-                    <div class="modal fade text-dark" id="notLoggedInLikeModal" tabindex="-1"
-                        aria-labelledby="notLoggedInLikeModalLabel" aria-hidden="true">
-                        <div class="modal-dialog">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h5 class="modal-title" id="notLoggedInLikeModal">Přidat do oblíbených</h5>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                        aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body text-center">
-                                    Pro přidání příspěvku do oblíbených se musíte přihlásit.
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary"
-                                        data-bs-dismiss="modal">Zavřít</button>
-                                    <a href="{{ route('login') }}" class="btn btn-primary">Přihlásit se</a>
+                    <div class="row">
+                        <div class="col-md-12">
+                            <div class="modal fade text-dark" id="notLoggedInLikeModal" tabindex="-1"
+                                 aria-labelledby="notLoggedInLikeModalLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="notLoggedInLikeModal">Přidat do oblíbených</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                    aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body text-center">
+                                            Pro přidání příspěvku do oblíbených se musíte přihlásit.
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                    data-bs-dismiss="modal">Zavřít</button>
+                                            <a href="{{ route('login') }}" class="btn btn-primary">Přihlásit se</a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-                </div>
-            </div>
+                @endauth
+            </h5>
         </div>
         <div class="card-body">
             <div class="card-text">
                 <h5>
-                    <img src="{{ asset('storage/' .DB::table('subforums')->where('id', $post->subforum_id)->value('image')) }}"
-                        class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                    <a href="{{ route('subforum', $post->subforum_id) }}" class="text-dark">
-                        {{ DB::table('subforums')->where('id', $post->subforum_id)->value('name') }}
-                    </a>
+                    Subforum: <x-subforumlink :subforum="$post->subforum" />
                 </h5>
                 <hr class="divider">
-                <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
-                    class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                <a href="{{ route('profile', $post->user_id) }}" class="text-dark">
-                    {{ DB::table('users')->where('id', $post->user_id)->value('name') }}
-                </a>
+                <x-userlink :user="$post->user" />
             </div>
             <div class="card-text">{{ date('d.m.Y', strtotime($post->created_at)) }}</div>
             <div class="card-text mb-1 mt-3">{!! $post->content !!}</div>

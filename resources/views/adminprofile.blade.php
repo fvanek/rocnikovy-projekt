@@ -1,5 +1,8 @@
 <x-layout>
-    <div class="card shadow-lg">
+    <x-slot name="title">
+        {{ $user->name }}
+    </x-slot>
+    <div class="card shadow-lg mb-3">
         <div class="card-header">
             <h5 class="card-title text-center">{{ $user->name }}</h5>
         </div>
@@ -49,34 +52,7 @@
                 </div>
         </div>
     </div>
-    @if ($posts->count() == 0)
-        <h5 class="card-title my-2 text-center alert alert-secondary">Žádné příspěvky</h5>
-    @else
-        @foreach ($posts as $post)
-            <div class="card my-2 shadow-lg">
-                <div class="card-header">
-                    <h5 class="card-title mb-0 text-center"><a class="card_header stretched-link link-dark"
-                                                               href="{{ route('post', $post->id) }}">{{ $post->title }}</a>
-                    </h5>
-                </div>
-                <div class="card-body">
-                    <div class="card-text">
-                        @if (strlen($post->content) > 100)
-                            {!! substr($post->content, 0, 100) . '...' !!}
-                        @else
-                            {!! $post->content !!}
-                        @endif
-                    </div>
-                    <div class="card-text mt-3">
-                        <img src="{{ asset('storage/' .DB::table('users')->where('id', $post->user_id)->value('avatar')) }}"
-                             class="img rounded-circle" width="30px" height="30px" alt="Profile Picture">
-                        {{ DB::table('users')->where('id', $post->user_id)->value('name') }} -
-                        {{ date('d.m.Y', strtotime($post->created_at)) }}
-                    </div>
-                </div>
-            </div>
-        @endforeach
-    @endif
+    <x-posts :posts="$posts" />
     <div class="modal fade text-dark" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel"
          aria-hidden="true">
         <div class="modal-dialog">
@@ -93,7 +69,7 @@
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary"
                             data-bs-dismiss="modal">Zavřít</button>
-                    <form action="/profile/delete" method="POST">
+                    <form action="{{ route('profile/delete') }}" method="POST">
                         @csrf
                         <input type="hidden" name="id" value="{{ $user->id }}">
                         <button type="submit" class="btn btn-danger">Smazat</button>

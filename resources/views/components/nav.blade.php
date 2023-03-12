@@ -1,6 +1,6 @@
 <nav class="navbar navbar-expand-lg bg-light sticky-top rounded mt-2 mx-2 shadow">
     <div class="container-fluid">
-        <span class="navbar-brand">{{ config('app.name') }}</span>
+        <span class="navbar-brand"><a href="{{ route('home') }}" class="text-decoration-none text-dark">{{ config('app.name') }}</a></span>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
             aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
@@ -14,6 +14,10 @@
                     <a class="nav-link" href="{{ route('subforums') }}"><i
                             class="fa-solid fa-comments me-1"></i>Subfora</a>
                 </li>
+                <li class="d-lg-none nav-item">
+                    <a class="nav-link" href="{{ route('about') }}"><i
+                            class="fa-solid fa-info-circle me-1"></i>O webu</a>
+                </li>
             </ul>
             <div class="col-12 col-lg-7 mx-lg-auto">
                 <livewire:searchbar />
@@ -22,15 +26,15 @@
                 <hr class="divider">
                 @auth
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                        <span class="nav-link dropdown-toggle" id="navbarDropdown" role="button"
                             data-bs-toggle="dropdown" aria-expanded="false">
                             <img src="{{ asset('storage/' . Auth::user()->avatar) }}" class="rounded-circle me-1"
-                                style="width: 30px; height: 30px;" alt="Avatar">
+                                width="30px" height="30px" alt="Avatar">
                             {{ Auth::user()->name }}
                             @if (Auth::user()->is_admin == 1)
                                 <span class="badge bg-danger ms-1">admin</span>
                             @endif
-                        </a>
+                        </span>
                         <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
                             <li>
                                 <a class="dropdown-item" href="/profile/{{ Auth::user()->id }}"><i

@@ -20,9 +20,7 @@ class SubforumController extends Controller
 {
     function RedirectToSubforumsPage()
     {
-        return view('subforums', [
-            'subforums' => Subforum::all(),
-        ]);
+        return view('subforums');
     }
 
     function RedirectToSubforumPage($id)

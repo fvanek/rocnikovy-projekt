@@ -1,9 +1,12 @@
 <x-layout>
+    <x-slot name="title">
+        Můj profil
+    </x-slot>
     @auth
         @if(Auth::user()->id == $user->id)
         <div class="row">
-            <div class="col-md-3">
-                <div class="card shadow-lg">
+            <div class="col-lg-3">
+                <div class="card shadow-lg mb-2">
                     <div class="card-header">
                         <h5 class="card-title text-center">{{ auth()->user()->name }}</h5>
                     </div>
@@ -48,7 +51,7 @@
                     </div>
                 </div>
             </div>
-            <div class="col-md-9 profile_settings">
+            <div class="col-lg-9">
                 <div class="card shadow-lg">
                     <div class="card-header">
                         <h5 class="card-title text-center">Nastavení</h5>
@@ -106,7 +109,7 @@
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary"
                                 data-bs-dismiss="modal">Zavřít</button>
-                        <form action="/profile/delete" method="POST">
+                        <form action="{{ route('profile/delete') }}" method="POST">
                             @csrf
                             <input type="hidden" name="id" value="{{ $user->id }}">
                             <button type="submit" class="btn btn-danger">Smazat</button>
