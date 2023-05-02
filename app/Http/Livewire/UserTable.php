@@ -69,7 +69,9 @@ final class UserTable extends PowerGridComponent
             ->addColumn('name')
             ->addColumn('email')
             ->addColumn('bio')
-            ->addColumn('google_id')
+            ->addColumn('google_user', function(User $model) {
+                return $model->google_id ? 'Ano' : 'Ne';
+            })
             ->addColumn('created_at_formatted', function (User $model) {
                 return Carbon::parse($model->created_at)->format('d/m/Y');
             })
@@ -108,7 +110,7 @@ final class UserTable extends PowerGridComponent
                 ->searchable()
                 ->sortable(),
 
-            Column::make('GOOGLE ID', 'google_id')
+            Column::make('PŘIHLÁŠEN PŘES GOOGLE', 'google_user')
                 ->searchable()
                 ->sortable(),
 
