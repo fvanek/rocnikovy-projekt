@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 class PostLike extends Model
 {
     use HasFactory, HasUlids;
+
+    protected $fillable = [
+        'post_id',
+        'user_id'
+    ];
 }

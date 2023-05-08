@@ -77,23 +77,4 @@ class PostController extends Controller
             'posts' => $posts,
         ]);
     }
-
-    function LikePost(Request $request)
-    {
-        if (!Auth::check())
-            return redirect()->route('login');
-
-        $like = PostLike::where('post_id', $request->post_id)->where('user_id', Auth::id())->first();
-        if ($like == null) {
-            $like = new PostLike();
-            $like->post_id = $request->post_id;
-            $like->user_id = Auth::id();
-            $like->save();
-            return response()->json(['success' => true, 'message' => 'Like added']);
-        } else {
-            $like->delete();
-            return response()->json(['success' => true, 'message' => 'Like removed']);
-        }
-    }
-
 }

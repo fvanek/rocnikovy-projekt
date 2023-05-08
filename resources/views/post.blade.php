@@ -39,72 +39,7 @@
         <div class="card-header">
             <h5 class="card-title post_card mb-1">
                 {{ $post->title }}
-                @auth
-                    <form id="like-form" action="{{ route('post/like') }}" method="POST" class="float-end">
-                        @csrf
-                        <input type="hidden" name="post_id" value="{{ $post->id }}">
-                        <button type="submit" class="btn btn-light btn-sm mb-1" id="like-button">
-                            @if (DB::table('post_likes')->where('post_id', $post->id)->where('user_id', Auth::user()->id)->exists())
-                                <i class="fa-solid fa-heart me-1 text-danger" id="heart"></i>
-                            @else
-                                <i class="fa-solid fa-heart me-1" id="heart"></i>
-                            @endif
-                            <span id="like-count">{{ $post->likes()->count() }}</span>
-                        </button>
-                    </form>
-                    <script>
-                        $('#like-form').on('submit', function(event) {
-                            event.preventDefault();
-
-                            $.ajax({
-                                url: $(this).attr('action'),
-                                method: $(this).attr('method'),
-                                data: $(this).serialize(),
-                                success: function(response) {
-                                    if (response.success && response.message == 'Like added') {
-                                        $('#heart').addClass('text-danger');
-                                        var likeCount = parseInt($('#like-count').text()) + 1;
-                                        $('#like-count').text(likeCount);
-                                    } else if (response.success && response.message == 'Like removed') {
-                                        $('#heart').removeClass('text-danger');
-                                        var likeCount = parseInt($('#like-count').text()) - 1;
-                                        $('#like-count').text(likeCount);
-                                    }
-                                }
-                            });
-                        });
-                    </script>
-                @else
-                    <button type="button" class="btn btn-light btn-sm float-end mb-1" data-bs-toggle="modal"
-                            data-bs-target="#notLoggedInLikeModal">
-                        <i class="fa-solid fa-heart me-1"></i>
-                        <b>{{ DB::table('post_likes')->where('post_id', $post->id)->count() }}</b>
-                    </button>
-                    <div class="row">
-                        <div class="col-md-12">
-                            <div class="modal fade text-dark" id="notLoggedInLikeModal" tabindex="-1"
-                                 aria-labelledby="notLoggedInLikeModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="notLoggedInLikeModal">Přidat do oblíbených</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                    aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body text-center">
-                                            Pro přidání příspěvku do oblíbených se musíte přihlásit.
-                                        </div>
-                                        <div class="modal-footer">
-                                            <button type="button" class="btn btn-secondary"
-                                                    data-bs-dismiss="modal">Zavřít</button>
-                                            <a href="{{ route('login') }}" class="btn btn-primary">Přihlásit se</a>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                @endauth
+                <livewire:post-like :post="$post" />
             </h5>
         </div>
         <div class="card-body">
